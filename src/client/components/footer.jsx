@@ -22,7 +22,7 @@ const Footer = (props) => {
             <div className="col-lg-3 col-md-6">
               <div className="footer-widget footer-about">
                 <div className="footer-logo">
-                  <img src={logo} alt="logo" />
+                  <h1>AlloDocteur226</h1>
                 </div>
                 <div className="footer-about-content">
                   <p>
@@ -65,22 +65,22 @@ const Footer = (props) => {
 
             <div className="col-lg-3 col-md-6">
               <div className="footer-widget footer-menu">
-                <h2 className="footer-title">For Patients</h2>
+                <h2 className="footer-title">Pour les patients</h2>
                 <ul>
                   <li>
-                    <Link to="/patient/search-doctor">Search for Doctors</Link>
+                    <Link to="/patient/search-doctor">Recherche des docteurs</Link>
                   </li>
                   <li>
-                    <Link to="/login">Login</Link>
+                    <Link to="/login">Connexion</Link>
                   </li>
                   <li>
-                    <Link to="/register">Register</Link>
+                    <Link to="/register">Inscription</Link>
                   </li>
                   <li>
-                    <Link to="/patient/booking">Booking</Link>
+                    <Link to="/patient/booking">Réservation</Link>
                   </li>
                   <li>
-                    <Link to="/patient/dashboard">Patient Dashboard</Link>
+                    <Link to="/patient/dashboard">Tableau de bord patient</Link>
                   </li>
                 </ul>
               </div>
@@ -88,22 +88,22 @@ const Footer = (props) => {
 
             <div className="col-lg-3 col-md-6">
               <div className="footer-widget footer-menu">
-                <h2 className="footer-title">For Doctors</h2>
+                <h2 className="footer-title">Pour les docteurs</h2>
                 <ul>
                   <li>
-                    <Link to="/doctor/appointments">Appointments</Link>
+                    <Link to="/doctor/appointments">Rendez vous</Link>
                   </li>
                   <li>
                     <Link to="/doctor/chat-doctor">Chat</Link>
                   </li>
                   <li>
-                    <Link to="/login">Login</Link>
+                    <Link to="/login">Connexion</Link>
                   </li>
                   <li>
-                    <Link to="/doctor/doctor-register">Register</Link>
+                    <Link to="/doctor/doctor-register">Inscription</Link>
                   </li>
                   <li>
-                    <Link to="/doctor/doctor-dashboard">Doctor Dashboard</Link>
+                    <Link to="/doctor/doctor-dashboard">Tableau de bord Docteur</Link>
                   </li>
                 </ul>
               </div>
@@ -111,7 +111,7 @@ const Footer = (props) => {
 
             <div className="col-lg-3 col-md-6">
               <div className="footer-widget footer-contact">
-                <h2 className="footer-title">Contact Us</h2>
+                <h2 className="footer-title">Contactez Nous</h2>
                 <div className="footer-contact-info">
                   <div className="footer-address">
                     <span>
@@ -119,16 +119,16 @@ const Footer = (props) => {
                     </span>
                     <p>
                       {" "}
-                      3556 Beech Street, San Francisco,California, CA 94108{" "}
+                      Ouagadougou Pissy, Secteur 27{" "}
                     </p>
                   </div>
                   <p>
                     <i className="fa fa-phone" aria-hidden="true"></i>
-                    +1 315 369 5943
+                    +226 75 83 32 34
                   </p>
                   <p className="mb-0">
                     <i className="fa fa-envelope" aria-hidden="true"></i>
-                    doccure@example.com
+                    dominioncode@example.com
                   </p>
                 </div>
               </div>
@@ -144,7 +144,7 @@ const Footer = (props) => {
               <div className="col-md-6 col-lg-6">
                 <div className="copyright-text">
                   <p className="mb-0">
-                    &copy; 2020 Doccure. All rights reserved.
+                    &copy; 2020 AlloDocteur226. Tous Droits réservés.
                   </p>
                 </div>
               </div>
@@ -152,10 +152,10 @@ const Footer = (props) => {
                 <div className="copyright-menu">
                   <ul className="policy-menu">
                     <li>
-                      <Link to="/pages/terms">Terms and Conditions</Link>
+                      <Link to="/pages/terms">Termes et Conditions</Link>
                     </li>
                     <li>
-                      <Link to="/pages/privacy-policy">Policy</Link>
+                      <Link to="/pages/privacy-policy">Confidentialité</Link>
                     </li>
                   </ul>
                 </div>

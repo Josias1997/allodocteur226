@@ -39,7 +39,7 @@ class SearchList extends Component{
                         <div className="doc-info-cont">
                             <h4 className="doc-name"><Link to="/patient/doctor-profile">Dr. Ruby Perrin</Link></h4>
                             <p className="doc-speciality">MDS - Periodontology and Oral Implantology, BDS</p>
-                            <h5 className="doc-department"><img src={IMG_sp_02} className="img-fluid" alt="Speciality" />Dentist</h5>
+                            <h5 className="doc-department"><img src={IMG_sp_02} className="img-fluid" alt="Speciality" />Dentiste</h5>
                             <div className="rating">
                                 <i className="fas fa-star filled"></i>
                                 <i className="fas fa-star filled"></i>
@@ -121,8 +121,8 @@ class SearchList extends Component{
                             </ul>
                         </div>
                         <div className="clinic-booking">
-                        <Link to="/patient/doctor-profile" className="view-pro-btn">View Profile</Link>
-                            <Link to="/patient/booking" className="apt-btn">Book Appointment</Link>
+                        <Link to="/patient/doctor-profile" className="view-pro-btn">Voir Profil</Link>
+                            <Link to="/patient/booking" className="apt-btn">Réservation</Link>
                         </div>
                     </div>
                 </div>
@@ -141,7 +141,7 @@ class SearchList extends Component{
                         <div className="doc-info-cont">
                             <h4 className="doc-name"><Link to="/patient/doctor-profile">Dr. Darren Elder</Link></h4>
                             <p className="doc-speciality">BDS, MDS - Oral & Maxillofacial Surgery</p>
-                            <h5 className="doc-department"><img src={IMG_sp_03} className="img-fluid" alt="Speciality" />Dentist</h5>
+                            <h5 className="doc-department"><img src={IMG_sp_03} className="img-fluid" alt="Speciality" />Dentiste</h5>
                             <div className="rating">
                                 <i className="fas fa-star filled"></i>
                                 <i className="fas fa-star filled"></i>
@@ -220,8 +220,8 @@ class SearchList extends Component{
                             </ul>
                         </div>
                         <div className="clinic-booking">
-                        <Link to="/patient/doctor-profile" className="view-pro-btn">View Profile</Link>
-                            <Link to="/patient/booking" className="apt-btn">Book Appointment</Link>
+                        <Link to="/patient/doctor-profile" className="view-pro-btn">Voir Profil</Link>
+                            <Link to="/patient/booking" className="apt-btn">Réservation</Link>
                         </div>
                     </div>
                 </div>
@@ -319,8 +319,8 @@ class SearchList extends Component{
                             </ul>
                         </div>
                         <div className="clinic-booking">
-                        <Link to="/patient/doctor-profile" className="view-pro-btn">View Profile</Link>
-                            <Link to="/patient/booking" className="apt-btn">Book Appointment</Link>
+                        <Link to="/patient/doctor-profile" className="view-pro-btn">Voir Profil</Link>
+                            <Link to="/patient/booking" className="apt-btn">Réservation</Link>
                         </div>
                     </div>
                 </div>
@@ -419,8 +419,8 @@ class SearchList extends Component{
                             </ul>
                         </div>
                         <div className="clinic-booking">
-                        <Link to="/patient/doctor-profile" className="view-pro-btn">View Profile</Link>
-                            <Link to="/patient/booking" className="apt-btn">Book Appointment</Link>
+                        <Link to="/patient/doctor-profile" className="view-pro-btn">Voir Profil</Link>
+                            <Link to="/patient/booking" className="apt-btn">Réservation</Link>
                         </div>
                     </div>
                 </div>
@@ -519,8 +519,8 @@ class SearchList extends Component{
                             </ul>
                         </div>
                         <div className="clinic-booking">
-                        <Link to="/patient/doctor-profile" className="view-pro-btn">View Profile</Link>
-                            <Link to="/patient/booking" className="apt-btn">Book Appointment</Link>
+                        <Link to="/patient/doctor-profile" className="view-pro-btn">Voir Profil</Link>
+                            <Link to="/patient/booking" className="apt-btn">Réservation</Link>
                         </div>
                     </div>
                 </div>

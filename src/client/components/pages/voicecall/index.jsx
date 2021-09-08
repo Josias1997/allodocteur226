@@ -27,14 +27,14 @@ class VoiceCall extends Component{
                                                 </div>
                                                 <div className="user-info float-left">
                                                     <a href="/doctor/patient-profile"><span>Charlene Reed</span></a>
-                                                    <span className="last-seen">Online</span>
+                                                    <span className="last-seen">En ligne</span>
                                                 </div>
                                             </div>
                                             <ul className="nav float-right custom-menu">
                                                 <li className="nav-item dropdown dropdown-action">
                                                     <a href="#0" className="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="fa fa-cog"></i></a>
                                                     <div className="dropdown-menu dropdown-menu-right">
-                                                        <a href="#0" className="dropdown-item">Settings</a>
+                                                        <a href="#0" className="dropdown-item">Paramètres</a>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -66,7 +66,7 @@ class VoiceCall extends Component{
                                          <ul className="call-items"> 
                                                 <li className="call-item">
  
-                                                <OverlayTrigger overlay={<Tooltip id="tooltip1">Enable video</Tooltip>}>
+                                                <OverlayTrigger overlay={<Tooltip id="tooltip1">Activer video</Tooltip>}>
                                                         <span className="d-inline-block">
                                                        <a href="/"> <i className="fas fa-video camera"></i></a>
                                                         </span>
@@ -81,7 +81,7 @@ class VoiceCall extends Component{
                                                 </OverlayTrigger>
                                                 </li>
                                                 <li className="call-item">
-                                                <OverlayTrigger overlay={<Tooltip id="tooltip2">Add User</Tooltip>}>
+                                                <OverlayTrigger overlay={<Tooltip id="tooltip2">Ajouter un utilisateur</Tooltip>}>
                                                         <span className="d-inline-block">
                                                        <a href="/"> <i className="fa fa-user-plus"></i></a>
                                                         </span>

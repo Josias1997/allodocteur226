@@ -34,7 +34,7 @@ class VideoCall extends Component {
                               <a href="/doctor/patient-profile">
                                 <span>Charlene Reed</span>
                               </a>
-                              <span className="last-seen">Online</span>
+                              <span className="last-seen">En ligne</span>
                             </div>
                           </div>
                           <ul className="nav float-right custom-menu">
@@ -49,7 +49,7 @@ class VideoCall extends Component {
                               </a>
                               <div className="dropdown-menu dropdown-menu-right">
                                 <a href="#0" className="dropdown-item">
-                                  Settings
+                                  Paramètres
                                 </a>
                               </div>
                             </li>
@@ -82,7 +82,7 @@ class VideoCall extends Component {
                             <li className="call-item">
                               <OverlayTrigger
                                 overlay={
-                                  <Tooltip id="tooltip1">Enable video</Tooltip>
+                                  <Tooltip id="tooltip1">Activer la vidéo</Tooltip>
                                 }
                               >
                                 <span className="d-inline-block">
@@ -108,7 +108,7 @@ class VideoCall extends Component {
                             <li className="call-item">
                               <OverlayTrigger
                                 overlay={
-                                  <Tooltip id="tooltip2">Add User</Tooltip>
+                                  <Tooltip id="tooltip2">Ajouter un utilisateur</Tooltip>
                                 }
                               >
                                 <span className="d-inline-block">

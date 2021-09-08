@@ -8,10 +8,10 @@ class SearchDoctor extends Component {
 	render() {
 		const options = [
 			{ value: 'Select', label: 'Select' },
-			{ value: 'Rating', label: 'Rating' },
-			{ value: 'Popular', label: 'Popular' },
-			{ value: 'Lastest', label: 'Lastest' },
-			{ value: 'Free', label: 'Free' },
+			{ value: 'Rating', label: 'Notes' },
+			{ value: 'Popular', label: 'Popularité' },
+			{ value: 'Lastest', label: 'Récents' },
+			{ value: 'Free', label: 'Gratuit' },
 		]
 		return (
 			<div>
@@ -25,11 +25,11 @@ class SearchDoctor extends Component {
 										<li className="breadcrumb-item active" aria-current="page">Search</li>
 									</ol>
 								</nav>
-								<h2 className="breadcrumb-title">2245 matches found for : Dentist In Bangalore</h2>
+								<h2 className="breadcrumb-title">20 résultats trouvés pour : Dentiste à Somgandé</h2>
 							</div>
 							<div className="col-md-4 col-12 d-md-block d-none">
 								<div className="sort-by">
-									<span className="sort-title">Sort by</span>
+									<span className="sort-title">Trier Par</span>
 									<span className="sortby-fliter">
 										<Select options={options} />
 									</span>
@@ -51,7 +51,7 @@ class SearchDoctor extends Component {
 							<div className="col-md-12 col-lg-8 col-xl-9">
 								<SearchList />
 								<div className="load-more text-center">
-									<a href="#0" className="btn btn-primary btn-sm">Load More</a>
+									<a href="#0" className="btn btn-primary btn-sm">Afficher Plus</a>
 								</div>
 							</div>
 						</div>

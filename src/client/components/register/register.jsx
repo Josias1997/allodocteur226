@@ -25,37 +25,37 @@ class Register extends Component {
                                 </div>
                                 <div className="col-md-12 col-lg-6 login-right">
                                     <div className="login-header">
-                                        <h3>Patient Register <Link to="/doctor/doctor-register" >Are you a Doctor?</Link></h3>
+                                        <h3>Inscription Patient <Link to="/doctor/doctor-register" >Êtes vous un docteur ?</Link></h3>
                                     </div>
                                     
                                   
                                     <form action="/doctor/doctor-dashboard">
                                         <div className="form-group form-focus">
                                             <input type="text" className="form-control floating" id="name" />
-                                            <label className="focus-label" htmlFor="name">Name</label>
+                                            <label className="focus-label" htmlFor="name">Nom</label>
                                         </div>
                                         <div className="form-group form-focus">
                                             <input type="text" className="form-control floating" id="mobile" />
-                                            <label className="focus-label" htmlFor="mobile">Mobile Number</label>
+                                            <label className="focus-label" htmlFor="mobile">Numéro de Téléphone</label>
                                         </div>
                                         <div className="form-group form-focus">
                                             <input type="password" className="form-control floating" id="password" />
-                                            <label className="focus-label" htmlFor="password">Create Password</label>
+                                            <label className="focus-label" htmlFor="password">Créer un mot de passe</label>
                                         </div>
                                         <div className="text-right">
-                                            <Link to="/login"className="forgot-link">Already have an account?</Link>
+                                            <Link to="/login"className="forgot-link">Déjà Inscrit?</Link>
                                         </div>
-                                        <button className="btn btn-primary btn-block btn-lg login-btn" type="submit">Signup</button>
+                                        <button className="btn btn-primary btn-block btn-lg login-btn" type="submit">Inscription</button>
                                         <div className="login-or">
                                             <span className="or-line"></span>
-                                            <span className="span-or">or</span>
+                                            <span className="span-or">ou</span>
                                         </div>
                                         <div className="row form-row social-login">
                                             <div className="col-6">
-                                                <a href="#0" className="btn btn-facebook btn-block"><i className="fab fa-facebook-f mr-1"></i> Login</a>
+                                                <a href="#0" className="btn btn-facebook btn-block"><i className="fab fa-facebook-f mr-1"></i> Connexion</a>
                                             </div>
                                             <div className="col-6">
-                                                <a href="#0" className="btn btn-google btn-block"><i className="fab fa-google mr-1"></i> Login</a>
+                                                <a href="#0" className="btn btn-google btn-block"><i className="fab fa-google mr-1"></i> Connexion</a>
                                             </div>
                                         </div>
                                     </form>

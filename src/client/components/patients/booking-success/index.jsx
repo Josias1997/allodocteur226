@@ -15,9 +15,9 @@ class BookingSuccess extends Component{
                     <div className="card-body">
                         <div className="success-cont">
                             <i className="fas fa-check"></i>
-                            <h3>Appointment booked Successfully!</h3>
-                            <p>Appointment booked with <strong>Dr. Darren Elder</strong><br /> on <strong>12 Nov 2019 5:00PM to 6:00PM</strong></p>
-                            <Link to="/pages/invoice-view" className="btn btn-primary view-inv-btn">View Invoice</Link>
+                            <h3>Consultation réservée avec Succès!</h3>
+                            <p>Rencontre avec <strong>Dr. Darren Elder</strong><br /> à la date du <strong>12 Nov 2019 5:00PM to 6:00PM</strong></p>
+                            <Link to="/pages/invoice-view" className="btn btn-primary view-inv-btn">Voir Facture</Link>
                         </div>
                     </div>
                 </div>

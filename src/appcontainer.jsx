@@ -1,5 +1,4 @@
 import React from "react";
-import config from 'config';
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Header from "./client/components/header.jsx";
 import Footer from "./client/components/footer.jsx";
@@ -52,18 +51,9 @@ import DoctorRegister from "./client/components/doctors/register";
 import Terms from "./client/components/pages/terms";
 import Policy from "./client/components/pages/policy";
 //pharmacy
-import Pharmacy from "./client/components/Pharmacy/pharmacy";
-import pharmacydetail from "./client/components/Pharmacy/pharmactdetail";
-import PharmacySearch from "./client/components/Pharmacy/pharmacysearch";
-import Cart from "./client/components/Pharmacy/cart";
-import Product from "./client/components/Pharmacy/product";
-import ProductDescription from "./client/components/Pharmacy/productdescription";
-import ProductCheckout from "./client/components/Pharmacy/productcheckout";
-import PayoutSuccess from "./client/components/Pharmacy/payoutsuccess";
 
 
 import AppUniversal from "./admin/app-universal";
-import PharmacyadminApp from "./pharmacyadmin/app-universal";
 import BlankPage from "./client/components/pages/blankpage/index.jsx";
 
 const AppContainer = function (props) {
@@ -71,7 +61,7 @@ const AppContainer = function (props) {
     const url = props.location.pathname.split("/")[1];
 
     return (
-      <Router basename={`${config.publicPath}`}>
+      <Router>
         {url === "admin" ? (
           <div>
             <Switch>
@@ -195,15 +185,6 @@ const AppContainer = function (props) {
               />
               <Route path="/terms" exact component={Terms} />
               <Route path="/privacy-policy" exact component={Policy} />
-              {/* Pharmacy */}              
-              <Route path="/Pharmacy/Pharmacy-index" exact component={Pharmacy} />
-              <Route path="/Pharmacy/Pharmacy-details" exact component={pharmacydetail} />
-              <Route path="/Pharmacy/pharmacy-search" exact component={PharmacySearch} />
-              <Route path="/Pharmacy/product-all" exact component={Product} />
-              <Route path="/Pharmacy/product-description" exact component={ProductDescription} />
-              <Route path="/Pharmacy/cart" exact component={Cart} />
-              <Route path="/Pharmacy/product-checkout" exact component={ProductCheckout} />
-              <Route path="/Pharmacy/payment-success" exact component={PayoutSuccess} />
             </Switch>
             <Route render={(props) => <Footer {...props} />} />
           </div>

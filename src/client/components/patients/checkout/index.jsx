@@ -24,17 +24,17 @@ class Checkout extends Component{
 									
 									
 										<div className="info-widget">
-											<h4 className="card-title">Personal Information</h4>
+											<h4 className="card-title">Informations Personnels</h4>
 											<div className="row">
 												<div className="col-md-6 col-sm-12">
 													<div className="form-group card-label">
-														<label>First Name</label>
+														<label>Nom</label>
 														<input className="form-control" type="text" />
 													</div>
 												</div>
 												<div className="col-md-6 col-sm-12">
 													<div className="form-group card-label">
-														<label>Last Name</label>
+														<label>Prénom</label>
 														<input className="form-control" type="text" />
 													</div>
 												</div>
@@ -46,80 +46,46 @@ class Checkout extends Component{
 												</div>
 												<div className="col-md-6 col-sm-12">
 													<div className="form-group card-label">
-														<label>Phone</label>
+														<label>Numéro de Téléphone</label>
 														<input className="form-control" type="text" />
 													</div>
 												</div>
 											</div>
-											<div className="exist-customer">Existing Customer? 
-											<Link to="/patient/checkout">Click here to login</Link></div>
+											<div className="exist-customer">Vous avez un compte? 
+											<Link to="/patient/checkout">Cliquez ici pour vous connecter</Link></div>
 										</div>
 										
 										
 										<div className="payment-widget">
-											<h4 className="card-title">Payment Method</h4>
+											<h4 className="card-title">Méthode de Paiement</h4>
 											
 										
 											<div className="payment-list">
 												<label className="payment-radio credit-card-option">
 													<input type="radio" name="radio" defaultChecked />
 													<span className="checkmark"></span>
-													Credit card
+													Orange Money
 												</label>
-												<div className="row">
-													<div className="col-md-6">
-														<div className="form-group card-label">
-															<label htmlFor="card_name">Name on Card</label>
-															<input className="form-control" id="card_name" type="text" />
-														</div>
-													</div>
-													<div className="col-md-6">
-														<div className="form-group card-label">
-															<label htmlFor="card_number">Card Number</label>
-                                                            <input className="form-control" id="card_number"
-                                                             placeholder="1234  5678  9876  5432" type="text" />
-														</div>
-													</div>
-													<div className="col-md-4">
-														<div className="form-group card-label">
-															<label htmlFor="expiry_month">Expiry Month</label>
-															<input className="form-control" id="expiry_month" placeholder="MM" type="text" />
-														</div>
-													</div>
-													<div className="col-md-4">
-														<div className="form-group card-label">
-															<label htmlFor="expiry_year">Expiry Year</label>
-															<input className="form-control" id="expiry_year" placeholder="YY" type="text" />
-														</div>
-													</div>
-													<div className="col-md-4">
-														<div className="form-group card-label">
-															<label htmlFor="cvv">CVV</label>
-															<input className="form-control" id="cvv" type="text" />
-														</div>
-													</div>
-												</div>
-											</div>
-											
+											</div>	
 											<div className="payment-list">
 												<label className="payment-radio paypal-option">
 													<input type="radio" name="radio" />
 													<span className="checkmark"></span>
-													Paypal
+													Mobicash
 												</label>
 											</div>
 											
 											<div className="terms-accept">
 												<div className="custom-checkbox">
 												   <input type="checkbox" id="terms_accept" />
-												   <label htmlFor="terms_accept">I have read and accept <a href="#0">Terms &amp; Conditions</a></label>
+												   <label htmlFor="terms_accept">J'ai lu et j'accepte <a href="#0">Termes &amp; Conditions</a></label>
 												</div>
 											</div>
 											
 											<div className="submit-section mt-4">
 												<button type="submit"
 												 className="btn btn-primary submit-btn"
-												 onClick={this.handleChange.bind(this)}>Confirm and Pay</button>
+												 onClick={this.handleChange.bind(this)}>Confirmer et Payer</button>
 											</div>
 										
 											
@@ -165,18 +131,18 @@ class Checkout extends Component{
 										<div className="booking-item-wrap">
 											<ul className="booking-date">
 												<li>Date <span>16 Nov 2019</span></li>
-												<li>Time <span>10:00 AM</span></li>
+												<li>Heure <span>10:00 AM</span></li>
 											</ul>
 											<ul className="booking-fee">
-												<li>Consulting Fee <span>$100</span></li>
-												<li>Booking Fee <span>$10</span></li>
-												<li>Video Call <span>$50</span></li>
+												<li>Frais de consulation <span>100 FCFA</span></li>
+												<li>Frais de réservation <span>10 FCFA</span></li>
+												<li>Frais d'appel <span>50 FCFA</span></li>
 											</ul>
 											<div className="booking-total">
 												<ul className="booking-total-list">
 													<li>
 														<span>Total</span>
-														<span className="total-cost">$160</span>
+														<span className="total-cost">160 FCFA</span>
 													</li>
 												</ul>
 											</div>

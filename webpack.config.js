@@ -1,5 +1,3 @@
-
-
 const path = require('path');
 const webpack = require('webpack');
 
@@ -25,7 +23,7 @@ module.exports = {
  devServer: {
    contentBase: path.join(__dirname, './'), // where dev server will look for static files, not compiled
   //  publicPath: '/', //relative path to output path where  devserver will look for compiled files
-   host: '0.0.0.0',
+    host: '0.0.0.0',
     compress: true,
     port: 3001, // port number
     historyApiFallback: true,

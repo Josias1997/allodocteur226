@@ -129,10 +129,10 @@ class DoctorList extends Component{
  render(){
     const options = [
         { value: 'Select', label: 'Select' },
-        { value: 'Rating', label: 'Rating' },
-        { value: 'Popular', label: 'Popular' },
-        { value: 'Lastest', label: 'Lastest' },
-        { value: 'Free', label: 'Free' },
+        { value: 'Rating', label: 'Note' },
+        { value: 'Popular', label: 'Popularité' },
+        { value: 'Lastest', label: 'Derniers' },
+        { value: 'Free', label: 'Gratuit' },
     ] 
     const { photoIndex, isOpen } = this.state;
     return(
@@ -174,7 +174,7 @@ class DoctorList extends Component{
                             <div className="doc-info-cont">
                                 <h4 className="doc-name"><Link to="/patient/doctor-profile">Dr. Ruby Perrin</Link></h4>
                                 <p className="doc-speciality">MDS - Periodontology and Oral Implantology, BDS</p>
-                                <h5 className="doc-department"><img src={IMG10} className="img-fluid" alt="Speciality" />Dentist</h5>
+                                <h5 className="doc-department"><img src={IMG10} className="img-fluid" alt="Speciality" />Dentiste</h5>
                                 <div className="rating">
                                     <i className="fas fa-star filled"></i>
                                     <i className="fas fa-star filled"></i>
@@ -248,8 +248,8 @@ class DoctorList extends Component{
                                 </ul>
                             </div>
                             <div className="clinic-booking">
-                                <a className="view-pro-btn" href="/patient/doctor-profile">View Profile</a>
-                                <Link className="apt-btn" to="/patient/booking">Book Appointment</Link>
+                                <a className="view-pro-btn" href="/patient/doctor-profile">Voir Profil</a>
+                                <Link className="apt-btn" to="/patient/booking">Réservation</Link>
                             </div>
                         </div>
                     </div>
@@ -268,7 +268,7 @@ class DoctorList extends Component{
                             <div className="doc-info-cont">
                                 <h4 className="doc-name"><Link to="/patient/doctor-profile">Dr. Darren Elder</Link></h4>
                                 <p className="doc-speciality">BDS, MDS - Oral & Maxillofacial Surgery</p>
-                                <h5 className="doc-department"><img src={IMG10} className="img-fluid" alt="Speciality" />Dentist</h5>
+                                <h5 className="doc-department"><img src={IMG10} className="img-fluid" alt="Speciality" />Dentiste</h5>
                                 <div className="rating">
                                     <i className="fas fa-star filled"></i>
                                     <i className="fas fa-star filled"></i>
@@ -342,8 +342,8 @@ class DoctorList extends Component{
                                 </ul>
                             </div>
                             <div className="clinic-booking">
-                                <a className="view-pro-btn" href="/patient/doctor-profile">View Profile</a>
-                                <Link className="apt-btn" to="/patient/booking">Book Appointment</Link>
+                                <a className="view-pro-btn" href="/patient/doctor-profile">Voir Profil</a>
+                                <Link className="apt-btn" to="/patient/booking">Réservation</Link>
                             </div>
                         </div>
                     </div>
@@ -436,8 +436,8 @@ class DoctorList extends Component{
                                 </ul>
                             </div>
                             <div className="clinic-booking">
-                                <a className="view-pro-btn" href="/patient/doctor-profile">View Profile</a>
-                                <Link className="apt-btn" to="/patient/booking">Book Appointment</Link>
+                                <a className="view-pro-btn" href="/patient/doctor-profile">Voir Profil</a>
+                                <Link className="apt-btn" to="/patient/booking">Réservation</Link>
                             </div>
                         </div>
                     </div>
@@ -530,8 +530,8 @@ class DoctorList extends Component{
                                 </ul>
                             </div>
                             <div className="clinic-booking">
-                                <a className="view-pro-btn" href="/patient/doctor-profile">View Profile</a>
-                                <Link className="apt-btn" to="/patient/booking">Book Appointment</Link>
+                                <a className="view-pro-btn" href="/patient/doctor-profile">Voir Profil</a>
+                                <Link className="apt-btn" to="/patient/booking">Réservation</Link>
                             </div>
                         </div>
                     </div>
@@ -624,8 +624,8 @@ class DoctorList extends Component{
                                 </ul>
                             </div>
                             <div className="clinic-booking">
-                                <a className="view-pro-btn" href="/patient/doctor-profile">View Profile</a>
-                                <Link className="apt-btn" to="/patient/booking">Book Appointment</Link>
+                                <a className="view-pro-btn" href="/patient/doctor-profile">Voir Profil</a>
+                                <Link className="apt-btn" to="/patient/booking">Réservation</Link>
                             </div>
                         </div>
                     </div>

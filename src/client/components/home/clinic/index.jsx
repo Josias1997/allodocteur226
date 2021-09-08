@@ -40,7 +40,7 @@ class HomeClinic extends Component{
             <section className="section section-specialities">
     <div className="container-fluid">
         <div className="section-header text-center">
-            <h2>Clinic and Specialities</h2>
+            <h2>Clinique and Specialités</h2>
             <p className="sub-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         </div>
         <div className="row justify-content-center">
@@ -54,7 +54,7 @@ class HomeClinic extends Component{
                             <img src={IMG01} className="img-fluid" alt="Speciality" />
                             <span><i className="fa fa-circle" aria-hidden="true"></i></span>
                         </div>
-                        <p>Urology</p>
+                        <p>Urologie</p>
                     </div>	
             </div>
             <div>
@@ -63,7 +63,7 @@ class HomeClinic extends Component{
                             <img src={IMG02} className="img-fluid" alt="Speciality" />
                             <span><i className="fa fa-circle" aria-hidden="true"></i></span>
                         </div>
-                        <p>Neurology</p>	
+                        <p>Neurologie</p>	
                     </div>	
             </div>
             <div>
@@ -72,7 +72,7 @@ class HomeClinic extends Component{
                             <img src={IMG03} className="img-fluid" alt="Speciality" />
                             <span><i className="fa fa-circle" aria-hidden="true"></i></span>
                         </div>	
-                        <p>Orthopedic</p>	
+                        <p>Orthopediste</p>	
                     </div>	
             </div>
             <div>
@@ -81,7 +81,7 @@ class HomeClinic extends Component{
                             <img src={IMG04} className="img-fluid" alt="Speciality" />
                             <span><i className="fa fa-circle" aria-hidden="true"></i></span>
                         </div>	
-                        <p>Cardiologist</p>	
+                        <p>Cardiologiste</p>	
                     </div>			
             </div>
             <div>
@@ -90,7 +90,7 @@ class HomeClinic extends Component{
                             <img src={IMG05} className="img-fluid" alt="Speciality" />
                             <span><i className="fa fa-circle" aria-hidden="true"></i></span>
                         </div>	
-                        <p>Dentist</p>
+                        <p>Dentiste</p>
                     </div>	
             </div>
             <div>
@@ -99,7 +99,7 @@ class HomeClinic extends Component{
                                 <img src={IMG01} className="img-fluid" alt="Speciality" />
                                 <span><i className="fa fa-circle" aria-hidden="true"></i></span>
                             </div>
-                            <p>Urology</p>
+                            <p>Pédiatrie</p>
                         </div>	
            
             </div>

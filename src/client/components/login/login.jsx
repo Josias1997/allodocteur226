@@ -24,11 +24,11 @@ class LoginContainer extends Component {
 							<div className="account-content">
 								<div className="row align-items-center justify-content-center">
 									<div className="col-md-7 col-lg-6 login-left">
-										<img src={loginBanner} className="img-fluid" alt="Doccure Login" />	
+										<img src={loginBanner} className="img-fluid" alt="AlloDocteur226 Connexion" />	
 									</div>
 									<div className="col-md-12 col-lg-6 login-right">
 										<div className="login-header">
-											<h3>Login <span>Doccure</span></h3>
+											<h3>Connexion <span>AlloDocteur226</span></h3>
 										</div>
 										<form action="/home">
 											<div className="form-group form-focus">
@@ -37,12 +37,12 @@ class LoginContainer extends Component {
 											</div>
 											<div className="form-group form-focus">
 												<input type="password" className="form-control floating" />
-												<label className="focus-label">Password</label>
+												<label className="focus-label">Mot de passe</label>
 											</div>
 											<div className="text-right">
-												<Link to="/forgot-password" className="forgot-link">Forgot Password ?</Link>
+												<Link to="/forgot-password" className="forgot-link">Mot de passe oublié ?</Link>
 											</div>
-											<button className="btn btn-primary btn-block btn-lg login-btn" type="submit">Login</button>
+											<button className="btn btn-primary btn-block btn-lg login-btn" type="submit">Connexion</button>
 											<div className="login-or">
 												<span className="or-line"></span>
 												<span className="span-or">or</span>
@@ -50,14 +50,14 @@ class LoginContainer extends Component {
 											<div className="row form-row social-login">
 												<div className="col-6">
 													<a href="#0" className="btn btn-facebook btn-block">
-													<i className="fab fa-facebook-f mr-1"></i>Login</a>
+													<i className="fab fa-facebook-f mr-1"></i>Connexion</a>
 												</div>
 												<div className="col-6">
 													<a href="#0" className="btn btn-google btn-block">
-													<i className="fab fa-google mr-1"></i>Login</a>
+													<i className="fab fa-google mr-1"></i>Connexion</a>
 												</div>
 											</div>
-											<div className="text-center dont-have">Don’t have an account?<Link to= "/register">Register</Link></div>
+											<div className="text-center dont-have">Pas de compte?<Link to= "/register">Inscription</Link></div>
 										</form>
 									</div>
 								</div>

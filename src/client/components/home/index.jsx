@@ -11,13 +11,13 @@ class Home extends Component{
         return(
             <div>
  <div className="main-wrapper">
-  <HomeSearch />  
+  <HomeSearch history={this.props.history} />  
   <section className="section home-tile-section">
             <div className="container-fluid">
             <div className="row">
                 <div className="col-md-9 m-auto">
                 <div className="section-header text-center">
-                    <h2>What are you looking for?</h2>
+                    <h2>Que recherchez-vous?</h2>
                 </div>
                 <div className="row">
                     <div className="col-lg-4 mb-3">
@@ -25,8 +25,8 @@ class Home extends Component{
                         <img src={Doctor07} alt="" className="img-fluid" />
                         <div className="doctor-book-card-content tile-card-content-1">
                         <div>
-                            <h3 className="card-title mb-0">Visit a Doctor</h3>
-                            <a href="/patient/search-doctor" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Book Now</a>
+                            <h3 className="card-title mb-0">Consultation à domicile</h3>
+                            <a href="/patient/search-doctor" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Réserver</a>
                         </div>
                         </div>
                     </div>
@@ -36,8 +36,8 @@ class Home extends Component{
                         <img src={ImgPharmacy1} alt="" className="img-fluid" />
                         <div className="doctor-book-card-content tile-card-content-1">
                         <div>
-                            <h3 className="card-title mb-0">Find a Pharmacy</h3>
-                            <a href="/Pharmacy/pharmacy-search" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Find Now</a>
+                            <h3 className="card-title mb-0">Consultation en ligne</h3>
+                            <a href="/patient/search-doctor" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Commencer</a>
                         </div>
                         </div>
                     </div>
@@ -47,8 +47,8 @@ class Home extends Component{
                         <img src={LabImage} alt="" className="img-fluid" />
                         <div className="doctor-book-card-content tile-card-content-1">
                         <div>
-                            <h3 className="card-title mb-0">Find a Lab</h3>
-                            <a href="" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Coming Soon</a>
+                            <h3 className="card-title mb-0">Inscription</h3>
+                            <a href="/register" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Créer un compte</a>
                         </div>
                         </div>
                     </div>
@@ -60,8 +60,8 @@ class Home extends Component{
           </section>
   <HomeClinic />
   <HomeBookDoctor />
-  <HomeFeatures />
-  <HomeBlog/>
+  {/**<HomeFeatures />**/}
+  {/**<HomeBlog/>**/}
        </div>
     </div>
         );

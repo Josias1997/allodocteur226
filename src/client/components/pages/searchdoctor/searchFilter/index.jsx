@@ -14,7 +14,7 @@ class SearchFilter extends Component{
         return(
                  <div className="card search-filter">
                             <div className="card-header">
-                                <h4 className="card-title mb-0">Search Filter</h4>
+                                <h4 className="card-title mb-0">Filtre de recherche</h4>
                             </div>
                             <div className="card-body">
                             <div className="filter-widget">
@@ -31,13 +31,13 @@ class SearchFilter extends Component{
                                 <div>
                                     <label className="custom_check">
                                         <input type="checkbox" name="gender_type" defaultChecked />
-                                        <span className="checkmark"></span> Male Doctor
+                                        <span className="checkmark"></span> Homme
                                     </label>
                                 </div>
                                 <div>
                                     <label className="custom_check">
                                         <input type="checkbox" name="gender_type" />
-                                        <span className="checkmark"></span> Female Doctor
+                                        <span className="checkmark"></span> Femme
                                     </label>
                                 </div>
                             </div>
@@ -46,42 +46,42 @@ class SearchFilter extends Component{
                                 <div>
                                     <label className="custom_check">
                                         <input type="checkbox" name="select_specialist" defaultChecked />
-                                        <span className="checkmark"></span> Urology
+                                        <span className="checkmark"></span> Urologiste
                                     </label>
                                 </div>
                                 <div>
                                     <label className="custom_check">
                                         <input type="checkbox" name="select_specialist" defaultChecked />
-                                        <span className="checkmark"></span> Neurology
+                                        <span className="checkmark"></span> Neurologiste
                                     </label>
                                 </div>
                                 <div>
                                     <label className="custom_check">
                                         <input type="checkbox" name="select_specialist" />
-                                        <span className="checkmark"></span> Dentist
+                                        <span className="checkmark"></span> Dentiste
                                     </label>
                                 </div>
                                 <div>
                                     <label className="custom_check">
                                         <input type="checkbox" name="select_specialist" />
-                                        <span className="checkmark"></span> Orthopedic
+                                        <span className="checkmark"></span> Orthopediste
                                     </label>
                                 </div>
                                 <div>
                                     <label className="custom_check">
                                         <input type="checkbox" name="select_specialist" />
-                                        <span className="checkmark"></span> Cardiologist
+                                        <span className="checkmark"></span> Cardiologiste
                                     </label>
                                 </div>
                                 <div>
                                     <label className="custom_check">
                                         <input type="checkbox" name="select_specialist" />
-                                        <span className="checkmark"></span> Cardiologist
+                                        <span className="checkmark"></span> Pédiatre
                                     </label>
                                 </div>
                             </div>
                                 <div className="btn-search">
-                                    <button type="button" className="btn btn-block">Search</button>
+                                    <button type="button" className="btn btn-block">Rechercher</button>
                                 </div>	
                             </div>
                         </div>

@@ -15,11 +15,11 @@ class Booking extends Component{
             <div className="col-md-12 col-12">
                 <nav aria-label="breadcrumb" className="page-breadcrumb">
                     <ol className="breadcrumb">
-                        <li className="breadcrumb-item"><Link to="/home">Home</Link></li>
-                        <li className="breadcrumb-item active" aria-current="page">Booking</li>
+                        <li className="breadcrumb-item"><Link to="/home">Accueil</Link></li>
+                        <li className="breadcrumb-item active" aria-current="page">Réservation</li>
                     </ol>
                 </nav>
-                <h2 className="breadcrumb-title">Booking</h2>
+                <h2 className="breadcrumb-title">Réservation</h2>
             </div>
         </div>
     </div>
@@ -55,8 +55,8 @@ class Booking extends Component{
 							</div>
 							<div className="row">
 								<div className="col-12 col-sm-4 col-md-6">
-									<h4 className="mb-1">11 November 2019</h4>
-									<p className="text-muted">Monday</p>
+									<h4 className="mb-1">09 Août 2021</h4>
+									<p className="text-muted">Lundi</p>
 								</div>
 								<div className="col-12 col-sm-8 col-md-6 text-sm-right">
 							
@@ -267,7 +267,7 @@ class Booking extends Component{
 							
 							</div>
 							<div className="submit-section proceed-btn text-right">
-								<Link to="/patient/checkout" className="btn btn-primary submit-btn">Proceed to Pay</Link>
+								<Link to="/patient/checkout" className="btn btn-primary submit-btn">Procéder au paiement</Link>
 							</div>
 						
 							
