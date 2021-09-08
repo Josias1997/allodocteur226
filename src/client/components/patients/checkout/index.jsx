@@ -102,7 +102,7 @@ class Checkout extends Component{
 						
 							<div className="card booking-card">
 								<div className="card-header">
-									<h4 className="card-title">Booking Summary</h4>
+									<h4 className="card-title">Récapitulatif Réservation</h4>
 								</div>
 								<div className="card-body">
 								
