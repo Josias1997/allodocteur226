@@ -18,6 +18,7 @@ class BookingSuccess extends Component{
                             <h3>Consultation réservée avec Succès!</h3>
                             <p>Rencontre avec <strong>Dr. Darren Elder</strong><br /> à la date du <strong>12 Nov 2019 5:00PM to 6:00PM</strong></p>
                             <Link to="/pages/invoice-view" className="btn btn-primary view-inv-btn">Voir Facture</Link>
+                            <Link to="/pages/video-call" className="btn btn-primary view-inv-btn">Appel Video</Link>
                         </div>
                     </div>
                 </div>

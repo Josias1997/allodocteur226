@@ -56,13 +56,13 @@ const Header = (props) => {
             </span>
           </a>
           <Link to="/home" className="navbar-brand logo">
-            <h1>AlloDocteur226</h1>
+            <h3>AlloDocteur226</h3>
           </Link>
         </div>
         <div className="main-menu-wrapper">
           <div className="menu-header">
             <Link to="/home" className="menu-logo">
-              <h1>AlloDocteur226</h1>
+              <h3>AlloDocteur226</h3>
             </Link>
             <a
               href="#0"
@@ -88,10 +88,10 @@ const Header = (props) => {
               </a>
               <ul className={`submenu`}>
                 <li className={pathnames.includes("search-doctor") ? "active" : ""}>
-                  <Link to="/patient/search-doctor" onClick={()=>onhandleCloseMenu()}>Consultation en ligne</Link>
+                  <Link to="/patient/search-doctor/online" onClick={()=>onhandleCloseMenu()}>Consultation en ligne</Link>
                 </li>
                 <li className={pathnames.includes("search-doctor") ? "active" : ""}>
-                  <Link to="/patient/search-doctor" onClick={()=>onhandleCloseMenu()}>Consultation à domicile</Link>
+                  <Link to="/patient/search-doctor/home" onClick={()=>onhandleCloseMenu()}>Consultation à domicile</Link>
                 </li>
               </ul>
             </li>

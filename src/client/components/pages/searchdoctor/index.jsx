@@ -44,12 +44,12 @@ class SearchDoctor extends Component {
 						<div className="row">
 							<div className="col-md-12 col-lg-4 col-xl-3">
 								<StickyBox offsetTop={20} offsetBottom={20}>
-									<SearchFilter />
+									<SearchFilter params={this.props.match.params} />
 								</StickyBox>
 							</div>
 
 							<div className="col-md-12 col-lg-8 col-xl-9">
-								<SearchList />
+								<SearchList params={this.props.match.params}  />
 								<div className="load-more text-center">
 									<a href="#0" className="btn btn-primary btn-sm">Afficher Plus</a>
 								</div>
