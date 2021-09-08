@@ -24,9 +24,9 @@ class Home extends Component{
                     <div className="card text-center doctor-book-card">
                         <img src={Doctor07} alt="" className="img-fluid" />
                         <div className="doctor-book-card-content tile-card-content-1">
-                        <div>
+                        <div onClick={() => this.props.history.push("/patient/search-doctor")}>
                             <h3 className="card-title mb-0">Consultation à domicile</h3>
-                            <a href="/patient/search-doctor" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Réserver</a>
+                            <a href="#" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Réserver</a>
                         </div>
                         </div>
                     </div>
@@ -35,7 +35,7 @@ class Home extends Component{
                     <div className="card text-center doctor-book-card">
                         <img src={ImgPharmacy1} alt="" className="img-fluid" />
                         <div className="doctor-book-card-content tile-card-content-1">
-                        <div>
+                        <div onClick={() => this.props.history.push("/patient/search-doctor")}>
                             <h3 className="card-title mb-0">Consultation en ligne</h3>
                             <a href="/patient/search-doctor" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Commencer</a>
                         </div>
@@ -46,7 +46,7 @@ class Home extends Component{
                     <div className="card text-center doctor-book-card">
                         <img src={LabImage} alt="" className="img-fluid" />
                         <div className="doctor-book-card-content tile-card-content-1">
-                        <div>
+                        <div onClick={() => this.props.history.push("/register")}>
                             <h3 className="card-title mb-0">Inscription</h3>
                             <a href="/register" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Créer un compte</a>
                         </div>

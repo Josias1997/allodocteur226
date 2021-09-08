@@ -54,10 +54,10 @@ class DoctorProfile extends Component {
 								<nav aria-label="breadcrumb" className="page-breadcrumb">
 									<ol className="breadcrumb">
 										<li className="breadcrumb-item"><Link to="/home">Home</Link></li>
-										<li className="breadcrumb-item active" aria-current="page">Doctor Profile</li>
+										<li className="breadcrumb-item active" aria-current="page">Profil Docteur</li>
 									</ol>
 								</nav>
-								<h2 className="breadcrumb-title">Doctor Profile</h2>
+								<h2 className="breadcrumb-title">Profil Docteur</h2>
 							</div>
 						</div>
 					</div>
@@ -176,7 +176,7 @@ class DoctorProfile extends Component {
 											</a>
 										</div>
 										<div className="clinic-booking">
-											<Link to="/patient/booking" className="apt-btn">Book Appointment</Link>
+											<Link to="/patient/booking" className="apt-btn">Réserver une consulation</Link>
 										</div>
 									</div>
 								</div>
@@ -197,7 +197,7 @@ class DoctorProfile extends Component {
 
 
 												<div className="widget about-widget">
-													<h4 className="widget-title">About Me</h4>
+													<h4 className="widget-title">A props de moi</h4>
 													<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 												</div>
 
