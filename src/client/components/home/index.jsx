@@ -37,7 +37,7 @@ class Home extends Component{
                         <div className="doctor-book-card-content tile-card-content-1">
                         <div onClick={() => this.props.history.push("/patient/search-doctor/online")}>
                             <h3 className="card-title mb-0">Consultation en ligne</h3>
-                            <a href="/patient/search-doctor" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Commencer</a>
+                            <a href="#" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Commencer</a>
                         </div>
                         </div>
                     </div>
@@ -48,7 +48,7 @@ class Home extends Component{
                         <div className="doctor-book-card-content tile-card-content-1">
                         <div onClick={() => this.props.history.push("/register")}>
                             <h3 className="card-title mb-0">Inscription</h3>
-                            <a href="/register" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Créer un compte</a>
+                            <a href="#" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Créer un compte</a>
                         </div>
                         </div>
                     </div>
