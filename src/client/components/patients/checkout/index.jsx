@@ -52,7 +52,7 @@ class Checkout extends Component{
 												</div>
 											</div>
 											<div className="exist-customer">Vous avez un compte? 
-											<Link to="/patient/checkout">Cliquez ici pour vous connecter</Link></div>
+											<Link to="/login">Cliquez ici pour vous connecter</Link></div>
 										</div>
 										
 										

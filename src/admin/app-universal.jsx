@@ -1,5 +1,4 @@
 import React from 'react';
-import config from 'config';
 
 import {  Route, BrowserRouter as Router, Switch} from 'react-router-dom';
 import Header from  './components/header/index';
@@ -39,10 +38,8 @@ import Components from './components/component';
 const AppUniversal = function (props) {
     return (
 		
-			<Router basename={`${config.publicPath}`}>
+			<Router>
 				<div className="main-wrapper">
-
-
 			    <Route render={(props)=> <Header {...props}/>} />
 				<Switch>
 					<Route path="/admin" exact component={Dashboard} />

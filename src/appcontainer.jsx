@@ -2,20 +2,11 @@ import React from "react";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import Header from "./client/components/header.jsx";
 import Footer from "./client/components/footer.jsx";
-import TopHeader from  './client/components/topheader.jsx';
 import LoginContainer from "./client/components/login/login.jsx";
 import Register from "./client/components/register/register.jsx";
 import ForgotPassword from "./client/components/forgot-password";
 import Home from "./client/components/home/index";
-import Home1 from "./client/components/home/home1";
-import Home2 from "./client/components/home/home2";
-import HomeSlider1 from "./client/components/home/homeslider1";
-import HomeSlider2 from "./client/components/home/homeslider2";
 
-//blog
-import BlogList from "./client/components/blog/bloglist";
-import BlogGrid from "./client/components/blog/bloggrid";
-import BlogDetails from "./client/components/blog/blogdetails";
 //pages
 import VideoCall from "./client/components/pages/videocall";
 import VoiceCall from "./client/components/pages/voicecall";
@@ -69,16 +60,8 @@ const AppContainer = function (props) {
             </Switch>
           </div>
         ) : 
-        url === "pharmacyadmin" ? (
-          <div>
-            <Switch>
-              <Route path="/pharmacyadmin" exact component={PharmacyadminApp} />
-            </Switch>
-          </div>
-        ) :
         (
           <div>
-            { url === "homeslider1" && <Route render={(props)=> <TopHeader {...props}/>} />}
             <Route render={(props) => <Header {...props} />} />
             <Switch>
               <Route path="/patient/doctor-grid" exact component={DoctorGrid} />
@@ -91,15 +74,6 @@ const AppContainer = function (props) {
               <Route path="/register" exact component={Register} />
               <Route path="/forgot-password" exact component={ForgotPassword} />
               <Route path="(/|/home)" exact component={Home} />	
-              <Route path="/home1" exact component={Home1} />	
-              <Route path="/home2" exact component={Home2} />	
-              <Route path="/homeslider1" exact component={HomeSlider1} />	
-              <Route path="/homeslider2" exact component={HomeSlider2} />
-
-              {/* blog */}
-              <Route path="/blog/blog-list" exact component={BlogList} />
-              <Route path="/blog/blog-grid" exact component={BlogGrid} />
-              <Route path="/blog/blog-details" exact component={BlogDetails} />
               {/* pages */}
 
               <Route

@@ -2604,7 +2604,7 @@ html.menu-opened body {
 }
 .search-btn {
     width: 100%;
-    margin-top: 15px;
+    margin-top: 0px;
 }
 .search-box-1 .search-btn {
     width: 46px;
@@ -3164,7 +3164,7 @@ html.menu-opened body {
     width: 490px;
 }
 .search-box1 .search-info .form-control {
-	background: #fff url() no-repeat 10px center;
+	background: #fff no-repeat 10px center;
 }
 .search-box1 .search-btn {
     width: 46px;

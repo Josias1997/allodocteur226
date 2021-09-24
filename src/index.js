@@ -8,7 +8,7 @@ import AppRouter from './approuter';
 // boostrap
 import 'bootstrap/dist/css/bootstrap.min.css';
 //fontawesome
-import '../node_modules/font-awesome/css/font-awesome.min.css'; 
+import 'font-awesome/css/font-awesome.min.css'; 
 import 'react-image-lightbox/style.css';
 import "react-datepicker/dist/react-datepicker.css";
 //carousel

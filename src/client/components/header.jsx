@@ -55,13 +55,13 @@ const Header = (props) => {
               <span></span>
             </span>
           </a>
-          <Link to="/home" className="navbar-brand logo">
+          <Link to="/" className="navbar-brand logo">
             <h3>AlloDocteur226</h3>
           </Link>
         </div>
         <div className="main-menu-wrapper">
           <div className="menu-header">
-            <Link to="/home" className="menu-logo">
+            <Link to="/" className="menu-logo">
               <h3>AlloDocteur226</h3>
             </Link>
             <a
@@ -73,7 +73,7 @@ const Header = (props) => {
               <i className="fas fa-times"></i>
             </a>
           </div>
-          <ul className="main-nav">
+          <ul className="main-nav ml-5">
             {/* <li className={`${pathnames === "/home" ? "active" : ""}`}>
             <a href="/home" to="/home">
             Home
@@ -88,15 +88,21 @@ const Header = (props) => {
               </a>
               <ul className={`submenu`}>
                 <li className={pathnames.includes("search-doctor") ? "active" : ""}>
-                  <Link to="/patient/search-doctor/online" onClick={()=>onhandleCloseMenu()}>Consultation en ligne</Link>
+                  <Link to="/patient/choose-speciality/online" onClick={()=>onhandleCloseMenu()}>Consultation en ligne</Link>
                 </li>
                 <li className={pathnames.includes("search-doctor") ? "active" : ""}>
-                  <Link to="/patient/search-doctor/home" onClick={()=>onhandleCloseMenu()}>Consultation à domicile</Link>
+                  <Link to="/patient/choose-speciality/home" onClick={()=>onhandleCloseMenu()}>Consultation à domicile</Link>
                 </li>
               </ul>
             </li>
             <li className={pathnames.includes("patient-chat") ? "active" : ""}>
               <Link to="/patient/patient-chat" onClick={()=>onhandleCloseMenu()}>Discuter</Link>
+            </li>
+            <li className={pathnames.includes("dashboard") ? "active" : ""}>
+              <Link to="/patient/book" onClick={()=>onhandleCloseMenu()}>Assurance Maladies</Link>
+            </li>
+            <li className={pathnames.includes("dashboard") ? "active" : ""}>
+              <Link to="/patient/dashboard" onClick={()=>onhandleCloseMenu()}>Compte</Link>
             </li>
             {/* <li>
               <a href="/admin" target="_blank" to="/admin">

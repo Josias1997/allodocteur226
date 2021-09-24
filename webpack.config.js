@@ -35,7 +35,7 @@ module.exports = {
       apiUrl: '',
       imageapiUrl: '',
       
-      publicPath : '/template'            
+      publicPath : '/'            
   })
 },
  output: {
@@ -50,7 +50,7 @@ module.exports = {
    },
    modules: [
     path.join(__dirname, "js/helpers"),
-    "node_modules"
+    "node_modules",
   ]
  },
  module: {

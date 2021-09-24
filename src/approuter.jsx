@@ -1,12 +1,19 @@
 import React from 'react';
-import AppContainer from './appcontainer.jsx';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Provider } from "react-redux";
+import { store, FirebaseProvider } from "common";
+
+import App from './app.jsx';
 
 const AppRouter = (props) => {
     return(
-        <Router>
-            <Route render={(props)=> <AppContainer {...props}/>} />
-        </Router>
+        <Provider store={store}>
+            <FirebaseProvider>
+                <Router>
+                    <App />
+                </Router>
+            </FirebaseProvider>
+        </Provider>
     );
     
 }

@@ -131,7 +131,7 @@ class DoctorList extends Component{
         { value: 'Select', label: 'Select' },
         { value: 'Rating', label: 'Note' },
         { value: 'Popular', label: 'Popularité' },
-        { value: 'Lastest', label: 'Derniers' },
+        { value: 'Latest', label: 'Derniers' },
         { value: 'Free', label: 'Gratuit' },
     ] 
     const { photoIndex, isOpen } = this.state;
@@ -185,7 +185,7 @@ class DoctorList extends Component{
                                 </div>
                                 <div className="clinic-details">
                                     <p className="doc-location"><i className="fas fa-map-marker-alt"></i> Florida, USA</p>
-                                    <div>
+                                <div>
        
        {isOpen && (
            <Lightbox
