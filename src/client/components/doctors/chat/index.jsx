@@ -1,38 +1,121 @@
-import React,{ Component } from 'react';
-
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { FirebaseContext } from 'common';
+import moment from 'moment';
+import { Link, useLocation } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
 import Icon from '@material-ui/core/Icon';
-import { IMG01, IMG02, IMG03, IMG04, IMG05, IMG06, IMG07, IMG08, IMG09, IMG010, IMG011  } from './img';
-class DoctorChat extends Component{
-    constructor(props) {
-		super(props);
-		this.state = {
-			activeModal: null
+import { IMG01, IMG02 } from './img';
 
-		}
-    }
-	openModal= (id)=> {
-        this.setState({activeModal: id}, () => {
-             
-            }); 
-	  }
-	  
-      handleCloseModal = () => {
-          this.setState({activeModal: false}, () => {
-             
-            }); 
-		}
+const useQuery = () => {
+	return new URLSearchParams(useLocation().search);
+}
 
-		componentDidMount(){
-			document.body.classList.add('chat-page');
-		}
-		componentWillUnmount(){
+const DoctorChat = () => {
+	const { api } = useContext(FirebaseContext);
+	const dispatch = useDispatch();
+	const chats = useSelector(state => state.doctordata.chats);
+	const patients = useSelector(state => state.admin.patients);
+	const chatMessages = useSelector(state => state.chatdata.chatMessages);
+	const user = useSelector(state => state.auth.user);
+	const [activeModal, setActiveModal] = useState(null);
+	const [searchInput, setSearchInput] = useState('');
+	const [messageInput, setMessageInput] = useState('');
+	const [currentPatients, setCurrentPatients] = useState(patients);
+	const [currentChat, setCurrentChat] = useState();
+	const query = useQuery();
+
+	useEffect(() => {
+		dispatch(api.fetchUsers("patient"));
+		document.body.classList.add('chat-page');
+		return () => {
 			document.body.classList.remove('chat-page');
 		}
+	}, [])
 
-    render(){
-        return(
+	useEffect(() => {
+		if (user) {
+			dispatch(api.fetchDoctorChats(user.id));
+		}
+	}, [user])
+
+	useEffect(() => {
+		if (chats.length > 0) {
+			const patient = query.get("patient");
+			if (patient) {
+				const filteredChat = chats.filter(chat => chat.patient.id === patient);
+				if (filteredChat.length > 0) {
+					setCurrentChat(filteredChat[0]);
+				}
+			} else {
+				setCurrentChat(chats[0]);
+			}
+		}
+	}, [chats]);
+
+	useEffect(() => {
+		if (currentChat) {
+			dispatch(api.fetchChatMessages(currentChat.id));
+		}
+	}, [currentChat])
+
+	const openModal= (id)=> {
+       	setActiveModal(id);
+	}
+	  
+    const handleCloseModal = () => {
+      	setActiveModal(false); 
+	}
+
+	const handleSearchInputChange = event => {
+		let value = event.target.value;
+		setSearchInput(value);
+		const searchResults = currentPatients.filter(patient => 
+			(patient.firstName + ' ' + patient.lastName).toLowerCase().includes(value.toLowerCase()));
+		setCurrentPatients(searchResults);
+	}
+
+	const createChat = patient => {
+		dispatch(api.createChat({
+			patient: patient,
+			doctor: user,
+			unreadMessages: 0,
+			lastMessage: {
+				type: "text",
+				text: "Nouvelle discussion",
+				date: moment().format("LL")
+			}
+		}))
+	}
+
+	const sendMessage = () => {
+		const date = moment().format("LT");
+		dispatch(api.sendMessage(currentChat.id, {
+			text: messageInput,
+			type: "text",
+			user: user,
+			date: date
+		}))
+		dispatch(api.updateChat(currentChat.id, {
+			lastMessage: {
+				type: "text",
+				text: messageInput,
+				date: date
+			},
+			unreadMessages: currentChat.unreadMessages + 1
+		}))
+		setMessageInput('');
+	}
+
+	const handleKeyPress = event => {
+		if (messageInput.trim()) {
+			if (event.charCode === 13) {
+				sendMessage();
+			}
+		}
+	}
+
+	return(
     <div>
         <div className="content">
 				<div className="container-fluid">
@@ -53,177 +136,65 @@ class DoctorChat extends Component{
 											<div className="input-group-prepend">
 												<i className="fas fa-search"></i>
 											</div>
-											<input type="text" className="form-control" placeholder="Search"/>
+											<input 
+												onChange={handleSearchInputChange} 
+												type="text" className="form-control" 
+												placeholder="Recherche"
+											/>
 										</div>
 									</form>
 									<div className="chat-users-list">
 										<div className="chat-scroll">
-											<a href="#0" className="media">
+										{chats.length === 0 ? currentPatients.map(patient => 
+											<a 
+												href="#0" 
+												className="media" 
+												key={patient.id} 
+												onClick={() => createChat(patient)}>
+											<div className="media-img-wrap">
+												<div className="avatar avatar-away">
+													<img src={IMG01} alt="User" className="avatar-img rounded-circle" />
+												</div>
+											</div>
+											<div className="media-body">
+												<div>
+													<div className="user-firstName">{patient.firstName} {patient.lastName}</div>
+													<div className="user-last-chat">
+														Cliquer pour commencer une discussion 
+													</div>
+												</div>
+												<div>
+													<div className="last-chat-time block"></div>
+													<div className="badge badge-success badge-pill"></div>
+												</div>
+											</div>
+											</a>) :
+											chats.map(chat => <a href="#0" className="media" key={chat.id}>
 												<div className="media-img-wrap">
 													<div className="avatar avatar-away">
-									<img src={IMG01} alt="User" className="avatar-img rounded-circle" />
+														<img src={IMG01} alt="User" className="avatar-img rounded-circle" />
 													</div>
 												</div>
 												<div className="media-body">
 													<div>
-														<div className="user-name">Richard Wilson</div>
-														<div className="user-last-chat">Hey, How are you?</div>
+														<div className="user-firstName">
+															{chat.patient.firstName + ' ' + chat.patient.lastName}
+														</div>
+														<div className="user-last-chat">
+															{chat.lastMessage.type === "text" ? chat.lastMessage.text : "Nouvelle Image"} 
+														</div>
 													</div>
 													<div>
-														<div className="last-chat-time block">2 min</div>
-														<div className="badge badge-success badge-pill">15</div>
+														<div className="last-chat-time block">{chat.lastMessage.date}</div>
+														<div className="badge badge-success badge-pill">{chat.unreadMessages}</div>
 													</div>
 												</div>
-											</a>
-											<a href="#0" className="media read-chat active">
-												<div className="media-img-wrap">
-													<div className="avatar avatar-online">
-								<img src={IMG02} alt="User" className="avatar-img rounded-circle" />
-													</div>
-												</div>
-												<div className="media-body">
-													<div>
-														<div className="user-name">Charlene Reed</div>
-														<div className="user-last-chat">I'll call you later </div>
-													</div>
-													<div>
-														<div className="last-chat-time block">8:01 PM</div>
-													</div>
-												</div>
-											</a>
-											<a href="#0" className="media">
-												<div className="media-img-wrap">
-													<div className="avatar avatar-away">
-								<img src={IMG03} alt="User" className="avatar-img rounded-circle" />
-													</div>
-												</div>
-												<div className="media-body">
-													<div>
-														<div className="user-name">Travis Trimble </div>
-														<div className="user-last-chat">Give me a full explanation about our project</div>
-													</div>
-													<div>
-														<div className="last-chat-time block">7:30 PM</div>
-														<div className="badge badge-success badge-pill">3</div>
-													</div>
-												</div>
-											</a>
-											<a href="#0" className="media read-chat">
-												<div className="media-img-wrap">
-													<div className="avatar avatar-online">
-							<img src={IMG04} alt="User" className="avatar-img rounded-circle" />
-													</div>
-												</div>
-												<div className="media-body">
-													<div>
-														<div className="user-name">Carl Kelly</div>
-														<div className="user-last-chat">That's very good UI design</div>
-													</div>
-													<div>
-														<div className="last-chat-time block">6:59 PM</div>
-													</div>
-												</div>
-											</a>
-											<a href="#0" className="media read-chat">
-												<div className="media-img-wrap">
-													<div className="avatar avatar-offline">
-									<img src={IMG04} alt="User" className="avatar-img rounded-circle" />
-													</div>
-												</div>
-												<div className="media-body">
-													<div>
-														<div className="user-name">Michelle Fairfax</div>
-														<div className="user-last-chat">Yesterday i completed the task</div>
-													</div>
-													<div>
-														<div className="last-chat-time block">11:21 AM</div>
-													</div>
-												</div>
-											</a>
-											<a href="#0" className="media read-chat">
-												<div className="media-img-wrap">
-													<div className="avatar avatar-online">
-								<img src={IMG05} alt="User" className="avatar-img rounded-circle" />
-													</div>
-												</div>
-												<div className="media-body">
-													<div>
-														<div className="user-name">Gina Moore</div>
-														<div className="user-last-chat">What is the major functionality?</div>
-													</div>
-													<div>
-														<div className="last-chat-time block">10:05 AM</div>
-													</div>
-												</div>
-											</a>
-											<a href="#0" className="media read-chat">
-												<div className="media-img-wrap">
-													<div className="avatar avatar-away">
-								<img src={IMG06} alt="User" className="avatar-img rounded-circle" />
-													</div>
-												</div>
-												<div className="media-body">
-													<div>
-														<div className="user-name">Elsie Gilley</div>
-														<div className="user-last-chat">This has allowed me to showcase not only my technical skills</div>
-													</div>
-													<div>
-														<div className="last-chat-time block">Yesterday</div>
-													</div>
-												</div>
-											</a>
-											<a href="#0" className="media read-chat">
-												<div className="media-img-wrap">
-													<div className="avatar avatar-offline">
-									<img src={IMG07} alt="User" className="avatar-img rounded-circle" />
-													</div>
-												</div>
-												<div className="media-body">
-													<div>
-														<div className="user-name">Joan Gardner</div>
-														<div className="user-last-chat">Let's talk briefly in the evening. </div>
-													</div>
-													<div>
-														<div className="last-chat-time block">Sunday</div>
-													</div>
-												</div>
-											</a>
-											<a href="#0" className="media read-chat">
-												<div className="media-img-wrap">
-													<div className="avatar avatar-online">
-									<img src={IMG08} alt="User" className="avatar-img rounded-circle" />
-													</div>
-												</div>
-												<div className="media-body">
-													<div>
-														<div className="user-name">Daniel Griffing</div>
-														<div className="user-last-chat">Do you have any collections? If so, what of?</div>
-													</div>
-													<div>
-														<div className="last-chat-time block">Saturday</div>
-													</div>
-												</div>
-											</a>
-											<a href="#0" className="media read-chat">
-												<div className="media-img-wrap">
-													<div className="avatar avatar-away">
-							<img src={IMG08} alt="User" className="avatar-img rounded-circle" />
-													</div>
-												</div>
-												<div className="media-body">
-													<div>
-														<div className="user-name">Walter Roberson</div>
-														<div className="user-last-chat">Connect the two modules with in 1 day.</div>
-													</div>
-													<div>
-														<div className="last-chat-time block">Friday</div>
-													</div>
-												</div>
-											</a>
+											</a>)
+										}
 										</div>
 									</div>
 								</div>
-								
+								{currentChat && 								
 								<div className="chat-cont-right">
 									<div className="chat-header">
 										<a id="back_user_list" href="#0" className="back-user-list">
@@ -232,19 +203,19 @@ class DoctorChat extends Component{
 										<div className="media">
 											<div className="media-img-wrap">
 												<div className="avatar avatar-online">
-								 <img src={IMG01} alt="User" className="avatar-img rounded-circle" />
+								 					<img src={IMG01} alt="User" className="avatar-img rounded-circle" />
 												</div>
 											</div>
 											<div className="media-body">
-												<div className="user-name">Richard Wilson</div>
+												<div className="user-firstName">{currentChat.patient.firstName} {currentChat.patient.lastName}</div>
 												<div className="user-status">online</div>
 											</div>
 										</div>
 										<div className="chat-options">
-											<a href="#0" data-toggle="modal" data-target="#voice_call" onClick={()=> this.openModal('voice')}>
+											<a href="#0" data-toggle="modal" data-target="#voice_call" onClick={() => openModal('voice')}>
 												<i className="material-icons">local_phone</i> 
 											</a>
-											<a href="#0" data-toggle="modal" data-target="#video_call" onClick={()=> this.openModal('video')}>
+											<a href="#0" data-toggle="modal" data-target="#video_call" onClick={() => openModal('video')}>
 												<i className="material-icons">videocam</i>
 											</a>
 											<a href="#0">
@@ -255,212 +226,50 @@ class DoctorChat extends Component{
 									<div className="chat-body">
 										<div className="chat-scroll">
 											<ul className="list-unstyled">
-												<li className="media sent">
-													<div className="media-body">
-														<div className="msg-box">
-															<div>
-																<p>Hello. What can I do for you?</p>
-																<ul className="chat-msg-info">
-																	<li>
-																		<div className="chat-time">
-																			<span>8:30 AM</span>
-																		</div>
-																	</li>
-																</ul>
-															</div>
-														</div>
-													</div>
-												</li>
-												<li className="media received">
+												{chatMessages.map(message => (
+												<li key={message.id} 
+													className={`media ${message.user.id === user.id ? "sent" : "received"}`}>
 													<div className="avatar">
-							<img src={IMG02} alt="User" className="avatar-img rounded-circle" />
+														<img src={IMG02} alt="User" className="avatar-img rounded-circle" />
 													</div>
 													<div className="media-body">
-														<div className="msg-box">
+													{
+														message.type === "text" ? 														<div className="msg-box">
 															<div>
-																<p>I'm just looking around.</p>
-																<p>Will you tell me something about yourself?</p>
+																<p>{message.text}</p>
 																<ul className="chat-msg-info">
 																	<li>
 																		<div className="chat-time">
-																			<span>8:35 AM</span>
+																			<span>{message.date}</span>
 																		</div>
 																	</li>
 																</ul>
 															</div>
-														</div>
-														<div className="msg-box">
-															<div>
-																<p>Are you there? That time!</p>
-																<ul className="chat-msg-info">
-																	<li>
-																		<div className="chat-time">
-																			<span>8:40 AM</span>
+														</div> : 
+															<div className="msg-box">
+																<div>
+																	<div className="chat-msg-attachments">
+																		<div className="chat-attachment">
+																			<img src={IMG010} alt="Attachment" />
+																			<div className="chat-attach-caption">placeholder.jpg</div>
+																			<a href="#0" className="chat-attach-download">
+																				<i className="fas fa-download"></i>
+																			</a>
 																		</div>
-																	</li>
-																</ul>
-															</div>
-														</div>
-														<div className="msg-box">
-															<div>
-																<div className="chat-msg-attachments">
-																	<div className="chat-attachment">
-																		<img src={IMG010} alt="Attachment" />
-																		<div className="chat-attach-caption">placeholder.jpg</div>
-																		<a href="#0" className="chat-attach-download">
-																			<i className="fas fa-download"></i>
-																		</a>
 																	</div>
-																	<div className="chat-attachment">
-																		<img src={IMG09} alt="Attachment" />
-																		<div className="chat-attach-caption">placeholder.jpg</div>
-																		<a href="#0" className="chat-attach-download">
-																			<i className="fas fa-download"></i>
-																		</a>
-																	</div>
-																</div>
-																<ul className="chat-msg-info">
-																	<li>
-																		<div className="chat-time">
-																			<span>8:41 AM</span>
-																		</div>
-																	</li>
-																</ul>
-															</div>
-														</div>
-													</div>
-												</li>
-												<li className="media sent">
-													<div className="media-body">
-														<div className="msg-box">
-															<div>
-																<p>Where?</p>
-																<ul className="chat-msg-info">
-																	<li>
-																		<div className="chat-time">
-																			<span>8:42 AM</span>
-																		</div>
-																	</li>
-																</ul>
-															</div>
-														</div>
-														<div className="msg-box">
-															<div>
-																<p>OK, my name is Limingqiang. I like singing, playing basketballand so on.</p>
-																<ul className="chat-msg-info">
-																	<li>
-																		<div className="chat-time">
-																			<span>8:42 AM</span>
-																		</div>
-																	</li>
-																</ul>
-															</div>
-														</div>
-														<div className="msg-box">
-															<div>
-																<div className="chat-msg-attachments">
-																	<div className="chat-attachment">
-																		<img src={IMG011} alt="Attachment" />
-																		<div className="chat-attach-caption">placeholder.jpg</div>
-																		<a href="#0" className="chat-attach-download">
-																			<i className="fas fa-download"></i>
-																		</a>
-																	</div>
-																</div>
-																<ul className="chat-msg-info">
-																	<li>
-																		<div className="chat-time">
-																			<span>8:50 AM</span>
-																		</div>
-																	</li>
-																</ul>
-															</div>
-														</div>
-													</div>
-												</li>
-												<li className="media received">
-													<div className="avatar">
-				                              <img src={IMG01} alt="User" className="avatar-img rounded-circle" />
-													</div>
-													<div className="media-body">
-														<div className="msg-box">
-															<div>
-																<p>You wait for notice.</p>
-																<p>Consectetuorem ipsum dolor sit?</p>
-																<p>Ok?</p>
-																<ul className="chat-msg-info">
-																	<li>
-																		<div className="chat-time">
-																			<span>8:55 PM</span>
-																		</div>
-																	</li>
-																</ul>
-															</div>
-														</div>
-													</div>
-												</li>
-												<li className="chat-date">Today</li>
-												<li className="media received">
-													<div className="avatar">
-					                          <img src={IMG02} alt="User" className="avatar-img rounded-circle" />
-													</div>
-													<div className="media-body">
-														<div className="msg-box">
-															<div>
-																<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
-																<ul className="chat-msg-info">
-																	<li>
-																		<div className="chat-time">
-																			<span>10:17 AM</span>
-																		</div>
-																	</li>
-																	<li><a href="#0">Edit</a></li>
-																</ul>
-															</div>
-														</div>
-													</div>
-												</li>
-												<li className="media sent">
-													<div className="media-body">
-														<div className="msg-box">
-															<div>
-																<p>Lorem ipsum dollar sit</p>
-																<div className="chat-msg-actions dropdown">
-																	<a href="#0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-																		<i className="fe fe-elipsis-v"></i>
-																	</a>
-																	<div className="dropdown-menu dropdown-menu-right">
-																		<a className="dropdown-item" href="#0">Delete</a>
-																	</div>
-																</div>
-																<ul className="chat-msg-info">
-																	<li>
-																		<div className="chat-time">
-																			<span>10:19 AM</span>
-																		</div>
-																	</li>
-																	<li><a href="#0">Edit</a></li>
-																</ul>
-															</div>
-														</div>
-													</div>
-												</li>
-												<li className="media received">
-													<div className="avatar">
-						          	<img src={IMG01} alt="User" className="avatar-img rounded-circle" />
-													</div>
-													<div className="media-body">
-														<div className="msg-box">
-															<div>
-																<div className="msg-typing">
-																	<span></span>
-																	<span></span>
-																	<span></span>
+																	<ul className="chat-msg-info">
+																		<li>
+																			<div className="chat-time">
+																				<span>8:41 AM</span>
+																			</div>
+																		</li>
+																	</ul>
 																</div>
 															</div>
-														</div>
+													}
 													</div>
 												</li>
+												))}
 											</ul>
 										</div>
 									</div>
@@ -472,14 +281,25 @@ class DoctorChat extends Component{
 													<input type="file" />
 												</div>
 											</div>
-											<input type="text" className="input-msg-send form-control" placeholder="Type something"/>
+											<input 
+												type="text" 
+												onChange={event => setMessageInput(event.target.value)} 
+												value={messageInput}
+												className="input-msg-send form-control"
+												onKeyPress={handleKeyPress}
+												placeholder="Message"/>
 											<div className="input-group-append">
-												<button type="button" className="btn msg-send-btn"><i className="fab fa-telegram-plane"></i></button>
+												<button 
+													type="button" 
+													className="btn msg-send-btn"
+													onClick={sendMessage}
+												>
+													<i className="fab fa-telegram-plane"></i>
+												</button>
 											</div>
 										</div>
 									</div>
-								</div>
-							
+								</div>}
 								
 							</div>
 						</div>
@@ -488,16 +308,16 @@ class DoctorChat extends Component{
 				</div>
 
 			</div>		
-							{/* modal for video*/}
-                            <Modal show={this.state.activeModal === 'video'} onHide={this.handleCloseModal} centered>
+				{/* modal for video*/}
+                <Modal show={activeModal === 'video'} onHide={handleCloseModal} centered>
 					<Modal.Body>	
 						<div className="call-box incoming-box">
 							<div className="call-wrapper">
 								<div className="call-inner">
 									<div className="call-user">
 										<img alt="User" src={IMG01} className="call-avatar" />
-										<h4>Dr. Darren Elder</h4>
-										<span>Connecting...</span>
+										<h4>{currentChat?.patient.firstName} {currentChat?.patient.lastName}</h4>
+										<span>Connection...</span>
 									</div>							
 									<div className="call-items">
 										<a href="#0" className="btn call-item call-end" data-dismiss="modal" aria-label="Close">
@@ -511,14 +331,14 @@ class DoctorChat extends Component{
 						</Modal.Body>
 				</Modal>
 				{/* modal for call*/}
-				<Modal show={this.state.activeModal === 'voice'} onHide={this.handleCloseModal} centered>
+				<Modal show={activeModal === 'voice'} onHide={handleCloseModal} centered>
 					<Modal.Body>	
 						<div className="call-box incoming-box">
 							<div className="call-wrapper">
 								<div className="call-inner">
 									<div className="call-user">
 										<img alt="User" src={IMG01} className="call-avatar" />
-										<h4>Dr. Darren Elder</h4>
+										<h4>{currentChat?.patient.firstName} {currentChat?.patient.lastName}</h4>
 										<span>Connecting...</span>
 									</div>							
 									<div className="call-items">
@@ -530,12 +350,11 @@ class DoctorChat extends Component{
 								</div>
 							</div>
 						</div>
-						</Modal.Body>
+					</Modal.Body>
 				</Modal>
 			
-		  </div>
+		</div>
 
-        );
-    }
+    );
 }
 export default DoctorChat;      

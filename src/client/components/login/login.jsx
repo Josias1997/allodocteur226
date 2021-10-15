@@ -1,11 +1,11 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { FirebaseContext } from "common";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import loginBanner from '../../assets/images/login-banner.png';
 
-const LoginContainer = props => {  
+const LoginContainer = props => {
 	const { api } = useContext(FirebaseContext);
 	const dispatch = useDispatch();
 	const user = useSelector(state => state.auth.user);
@@ -22,32 +22,31 @@ const LoginContainer = props => {
 		}
 	}, []);
 
-	useEffect(() => {
-		if (user) {
-			if (user.role === "doctor") {
-				props.history.push('/doctor/doctor-dashboard');
-			} else {
-				props.history.push('/patient/dashboard');
-			}
-		}
-	}, [user])
 
 	const login = () => {
 		dispatch(api.signIn(email, password));
 	};
+
+	if (user) {
+		if (user.role === "doctor") {
+			return <Redirect to="/doctor/doctor-dashboard" />
+		} else {
+			return <Redirect to="/patient/dashboard" />
+		}
+	}
 
 
 	return(
 
 	     <div className="content">
 			<div className="container-fluid">
-				
+
 				<div className="row">
 					<div className="col-md-8 offset-md-2">
 						<div className="account-content">
 							<div className="row align-items-center justify-content-center">
 								<div className="col-md-7 col-lg-6 login-left">
-									<img src={loginBanner} className="img-fluid" alt="AlloDocteur226 Connexion" />	
+									<img src={loginBanner} className="img-fluid" alt="AlloDocteur226 Connexion" />
 								</div>
 								<div className="col-md-12 col-lg-6 login-right">
 									<div className="login-header">
@@ -55,18 +54,18 @@ const LoginContainer = props => {
 									</div>
 									{error && <div className="alert alert-danger">{error.message}</div>}
 										<div className="form-group form-focus">
-											<input 
-												type="email" 
-												className="form-control floating" 
-												onChange={event => setEmail(event.target.value)} 
+											<input
+												type="email"
+												className="form-control floating"
+												onChange={event => setEmail(event.target.value)}
 											/>
 											<label className="focus-label">Email</label>
 										</div>
 										<div className="form-group form-focus">
-											<input 
-												type="password" 
-												className="form-control floating" 
-												onChange={event => setPassword(event.target.value)} 
+											<input
+												type="password"
+												className="form-control floating"
+												onChange={event => setPassword(event.target.value)}
 											/>
 											<label className="focus-label">Mot de passe</label>
 										</div>
@@ -98,8 +97,8 @@ const LoginContainer = props => {
 								</div>
 							</div>
 						</div>
-						
-							
+
+
 					</div>
 				</div>
 

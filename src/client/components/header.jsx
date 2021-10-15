@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector, useDispatch } from "react-redux";
+import { FirebaseContext } from "common";
 //icon
 
 import { faHospital } from "@fortawesome/free-regular-svg-icons";
@@ -11,6 +13,9 @@ import $ from "jquery";
 import { useEffect } from "react";
 
 const Header = (props) => {
+  const { api } = useContext(FirebaseContext);
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
   let pathnames = window.location.pathname
 
   const [active, setActive] = useState(false);
@@ -82,15 +87,15 @@ const Header = (props) => {
             <li className={pathnames.includes("home") ? "active" : ""}>
               <Link to="/home" onClick={()=>onhandleCloseMenu()}>Accueil</Link>
             </li>
-            <li className={`has-submenu ${url.includes("/doctor") ? "active" : ""}`}>
+            <li className={`has-submenu ${url.includes("choose-speciality") ? "active" : ""}`}>
               <a href="#0">
                 Réservation<i className="fas fa-chevron-down" aria-hidden="true"></i>
               </a>
               <ul className={`submenu`}>
-                <li className={pathnames.includes("search-doctor") ? "active" : ""}>
+                <li>
                   <Link to="/patient/choose-speciality/online" onClick={()=>onhandleCloseMenu()}>Consultation en ligne</Link>
                 </li>
-                <li className={pathnames.includes("search-doctor") ? "active" : ""}>
+                <li>
                   <Link to="/patient/choose-speciality/home" onClick={()=>onhandleCloseMenu()}>Consultation à domicile</Link>
                 </li>
               </ul>
@@ -98,34 +103,36 @@ const Header = (props) => {
             <li className={pathnames.includes("patient-chat") ? "active" : ""}>
               <Link to="/patient/patient-chat" onClick={()=>onhandleCloseMenu()}>Discuter</Link>
             </li>
-            <li className={pathnames.includes("dashboard") ? "active" : ""}>
-              <Link to="/patient/book" onClick={()=>onhandleCloseMenu()}>Assurance Maladies</Link>
-            </li>
-            <li className={pathnames.includes("dashboard") ? "active" : ""}>
-              <Link to="/patient/dashboard" onClick={()=>onhandleCloseMenu()}>Compte</Link>
+            <li className={pathnames.includes("choose-package") ? "active" : ""}>
+              <Link to="/patient/choose-package" onClick={()=>onhandleCloseMenu()}>Assurance Maladies</Link>
             </li>
             {/* <li>
               <a href="/admin" target="_blank" to="/admin">
                 Admin
               </a>
             </li> */}
-            <li className="login-link" onClick={()=>onhandleCloseMenu()}>
-              <Link to="/">Connexion / Inscription</Link>
-            </li>
+            {user ? (<li className="login-link" onClick={()=>onhandleCloseMenu()}>
+                <i className="fa fa-user"></i>
+               <Link to={user.role === "patient" ? "/patient/dashboard" : "/doctor/doctor-dashboard"}>Profil</Link>
+             </li>) :
+            <li className="login-link" onClick={() => onhandleCloseMenu()}>
+               <Link to="/login">Connexion / Inscription</Link>
+             </li>
+           }
           </ul>
         </div>
         <ul className="nav header-navbar-rht">
-          <li className="nav-item contact-item">
-            <div className="header-contact-img">
-              <i className="far fa-hospital" />							
-            </div>
-            <div className="header-contact-detail">
-              <p className="contact-header">Contact</p>
-              <p className="contact-info-header"> +226 75 83 32 34</p>
-            </div>
-          </li>
+          {!user && <li className="nav-item contact-item">
+                      <div className="header-contact-img">
+                        <i className="far fa-hospital" />
+                      </div>
+                      <div className="header-contact-detail">
+                        <p className="contact-header">Contact</p>
+                        <p className="contact-info-header"> +226 75 83 32 34</p>
+                      </div>
+                    </li>}
 
-          {(props.location.pathname) === ("/pages/voice-call") || (props.location.pathname) === ("/pages/video-call") ? (
+          {user ? (
             <>
               <Dropdown className="user-drop nav-item dropdown has-arrow logged-item">
                 <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -133,7 +140,7 @@ const Header = (props) => {
                     className="rounded-circle"
                     src={IMG01}
                     width="31"
-                    alt="Darren Elder"
+                    alt={user?.firstName}
                   />
                 </Dropdown.Toggle>
 
@@ -147,27 +154,26 @@ const Header = (props) => {
                       />
                     </div>
                     <div className="user-text">
-                      <h6>Darren Elder</h6>
-                      <p className="text-muted mb-0">Docteur</p>
+                      <h6>{user?.firstName} {user?.lastName}</h6>
+                      <p className="text-muted mb-0">{user?.role === "doctor" ? "Docteur" : "Patient"}</p>
                     </div>
                   </div>
-                  <Dropdown.Item href="/doctor/doctor-dashboard">
+                  <Dropdown.Item href={user.role === "doctor" ? "/doctor/doctor-dashboard" : "/patient/dashboard"}>
                    Tableau de bord
                   </Dropdown.Item>
-                  <Dropdown.Item href="/doctor/profile-setting">
+                  <Dropdown.Item href={user.role === "doctor" ? "/doctor/profile-setting" : "/patient/profile"}>
                     Paramètres Profil
                   </Dropdown.Item>
-                  <Dropdown.Item href="/login">Déconnexion</Dropdown.Item>
+                  <Dropdown.Item href="/" onClick={() => dispatch(api.signOut())} >Déconnexion</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </>
           ) : (
             <>
-              <li className="nav-item">
-                <Link to="/login" className="nav-link header-login">
-                    Connexion / Inscription{" "}
-                </Link>
-              </li>{" "}
+            <li className="login-link" onClick={() => onhandleCloseMenu()}>
+               <Link to="/login">Connexion / Inscription</Link>
+             </li>
+           {" "}
             </>
           )}
         </ul>

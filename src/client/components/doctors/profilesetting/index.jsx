@@ -1,52 +1,72 @@
-import React, { Component } from 'react';
+import React, { useState, useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { FirebaseContext } from 'common';
 import DoctorSidebar from '../sidebar/index';
 import IMG01 from '../../../assets/images/doctor-thumb-02.jpg';
 import IMG02 from '../../../assets/images/feature-01.jpg';
 import IMG03 from '../../../assets/images/feature-02.jpg';
-import ReactTagsInput from './tags.jsx';
-import Education from './education';
-import Experience from './experience';
-import Award from './award';
-import Memberships from './membership';
 import {DropzoneArea} from 'material-ui-dropzone'
-import Registration from './registration';
-//import Registrations from './registration';
 
-// const KeyCodes = {
-// 	comma: 188,
-// 	enter: 13,
-//   };
-   
-//const delimiters = [KeyCodes.comma, KeyCodes.enter];
+const ProfileSetting = () => {
 
-class ProfileSetting extends Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			files: []
-		  };
-		}
+    const { api } = useContext(FirebaseContext);
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.auth.user);
+    const [files, setFiles] = useState([]);
+    const [username, setUsername] = useState(user?.username ? user?.username : "");
+    const [firstName, setFirstName] = useState(user?.firstName ? user?.firstName : "");
+    const [lastName, setLastName] = useState(user?.lastName ? user?.lastName : "");
+    const [birthDate, setBirthDate] = useState(user?.birthDate ? user?.birthDate : "");
+    const [bloodGroup, setBloodGroup] = useState(user?.bloodGroup ? user?.bloodGroup : "");
+    const [email, setEmail] = useState(user?.email ? user?.email : "");
+    const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber ? user?.phoneNumber : "");
+    const [gender, setGender] = useState(user?.gender ? user?.gender : "");
+    const [addressLine1, setAddressLine1] = useState(user?.addressLine1 ? user?.addressLine1 : "");
+    const [addressLine2, setAddressLine2] = useState(user?.addressLine2 ? user?.addressLine2 : "");
+    const [city, setCity] = useState(user?.city ? user?.city : "");
+    const [state, setState] = useState(user?.state ? user?.state : "");
+    const [zipCode, setZipCode] = useState(user?.zipCode ? user?.zipCode : "");
+    const [country, setCountry] = useState(user?.country ? user?.country : "");
+    const [services, setServices] = useState(user?.services ? user?.services : "");
+    const [speciality, setSpeciality] = useState(user?.speciality ? user?.speciality : "");
+	
+	const handleChange = (files) => {
+		setFiles(files);
+	};
 
-		handleChange(files){
-			this.setState({
-			  files: files
-			});
-		  }
-		
-    render(){
+	const saveChanges = () => {
+		dispatch(api.updateUser(user.id, {
+			firstName,
+			lastName,
+			birthDate,
+			bloodGroup,
+			email,
+			phoneNumber,
+			gender,
+			addressLine1,
+			addressLine2,
+			city, 
+			state,
+			zipCode,
+			country,
+			services,
+			speciality
+		}))
+	}
+
 	return(
     <div>
-            <div className="breadcrumb-bar">
+        <div className="breadcrumb-bar">
             <div className="container-fluid">
                 <div className="row align-items-center">
                     <div className="col-md-12 col-12">
                         <nav aria-label="breadcrumb" className="page-breadcrumb">
                             <ol className="breadcrumb">
-                                <li className="breadcrumb-item"><a href="/home">Home</a></li>
-                                <li className="breadcrumb-item active" aria-current="page">Profile Settings</li>
+                                <li className="breadcrumb-item"><a href="/home">Accueil</a></li>
+                                <li className="breadcrumb-item active" aria-current="page">Paramètres Profil</li>
                             </ol>
                         </nav>
-                        <h2 className="breadcrumb-title">Profile Settings</h2>
+                        <h2 className="breadcrumb-title">Paramètres Profil</h2>
                     </div>
                 </div>
             </div>
@@ -65,7 +85,7 @@ class ProfileSetting extends Component {
 						
 							<div className="card">
 								<div className="card-body">
-									<h4 className="card-title">Basic Information</h4>
+									<h4 className="card-title">Information Basique</h4>
 									<div className="row form-row">
 										<div className="col-md-12">
 											<div className="form-group">
@@ -75,48 +95,57 @@ class ProfileSetting extends Component {
 													</div>
 													<div className="upload-img">
 														<div className="change-photo-btn">
-															<span><i className="fa fa-upload"></i> Upload Photo</span>
+															<span><i className="fa fa-upload"></i> Uploader une Photo</span>
 															<input type="file" className="upload" />
 														</div>
-														<small className="form-text text-muted">Allowed JPG, GIF or PNG. Max size of 2MB</small>
+														<small className="form-text text-muted">Autorisé JPG, GIF or PNG.Taille Max 2MB</small>
 													</div>
 												</div>
 											</div>
 										</div>
 										<div className="col-md-6">
 											<div className="form-group">
-												<label>Username <span className="text-danger">*</span></label>
-												<input type="text" className="form-control" readOnly />
+												<label>Nom d'utilisateur <span className="text-danger">*</span></label>
+												<input type="text" defaultValue={username}
+												onChange={event => setUsername(event.target.value)} 
+												className="form-control" readOnly />
 											</div>
 										</div>
 										<div className="col-md-6">
 											<div className="form-group">
 												<label>Email <span className="text-danger">*</span></label>
-												<input type="email" className="form-control" readOnly/>
+												<input type="email"
+												defaultValue={email}
+												onChange={event => setEmail(event.target.value)}
+												className="form-control" readOnly/>
 											</div>
 										</div>
 										<div className="col-md-6">
 											<div className="form-group">
-												<label>First Name <span className="text-danger">*</span></label>
-												<input type="text" className="form-control" />
+												<label>Nom <span className="text-danger">*</span></label>
+												<input defaultValue={firstName}
+												onChange={event => setFirstName(event.target.value)} type="text" className="form-control" />
 											</div>
 										</div>
 										<div className="col-md-6">
 											<div className="form-group">
-												<label>Last Name <span className="text-danger">*</span></label>
-												<input type="text" className="form-control"/>
+												<label>Prénom <span className="text-danger">*</span></label>
+												<input defaultValue={lastName}
+												onChange={event => setLastName(event.target.value)} type="text" className="form-control"/>
 											</div>
 										</div>
 										<div className="col-md-6">
 											<div className="form-group">
-												<label>Phone Number</label>
-												<input type="text" className="form-control" />
+												<label>Numéro de Téléphone</label>
+												<input defaultValue={phoneNumber}
+												onChange={event => setPhoneNumber(event.target.value)} type="text" className="form-control" />
 											</div>
 										</div>
 										<div className="col-md-6">
 											<div className="form-group">
-												<label>Gender</label>
-												<select className="form-control select">
+												<label>Genre</label>
+												<select defaultValue={gender}
+												onChange={event => setGender(event.target.value)} className="form-control select">
 													<option>Select</option>
 													<option>Male</option>
 													<option>Female</option>
@@ -125,50 +154,10 @@ class ProfileSetting extends Component {
 										</div>
 										<div className="col-md-6">
 											<div className="form-group mb-0">
-												<label>Date of Birth</label>
-												<input type="text" className="form-control" />
+												<label>Date de Naissance</label>
+												<input defaultValue={birthDate}
+												onChange={event => setBirthDate(event.target.value)} type="text" className="form-control" />
 											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						
-							<div className="card">
-								<div className="card-body">
-									<h4 className="card-title">About Me</h4>
-									<div className="form-group mb-0">
-										<label>Biography</label>
-										<textarea className="form-control" rows="5"></textarea>
-									</div>
-								</div>
-							</div>
-						
-							<div className="card">
-								<div className="card-body">
-									<h4 className="card-title">Clinic Info</h4>
-									<div className="row form-row">
-										<div className="col-md-6">
-											<div className="form-group">
-												<label>Clinic Name</label>
-												<input type="text" className="form-control"/>
-											</div>
-										</div>
-										<div className="col-md-6">
-											<div className="form-group">
-												<label>Clinic Address</label>
-												<input type="text" className="form-control" />
-											</div>
-										</div>
-										<div className="col-md-12">
-											<div className="form-group">
-												<label>Clinic Images</label>
-												<div>
-												<DropzoneArea
-        onChange={this.handleChange.bind(this)}
-        />
-         											 </div>
-											</div>
-										
 										</div>
 									</div>
 								</div>
@@ -176,102 +165,76 @@ class ProfileSetting extends Component {
 						
 							<div className="card contact-card">
 								<div className="card-body">
-									<h4 className="card-title">Contact Details</h4>
+									<h4 className="card-title">Détails Contact</h4>
 									<div className="row form-row">
 										<div className="col-md-6">
 											<div className="form-group">
-												<label>Address Line 1</label>
-												<input type="text" className="form-control" />
+												<label>Addresse Ligne 1</label>
+												<input defaultValue={addressLine1}
+												onChange={event => setAddressLine1(event.target.value)} type="text" className="form-control" />
 											</div>
 										</div>
 										<div className="col-md-6">
 											<div className="form-group">
-												<label className="control-label">Address Line 2</label>
-												<input type="text" className="form-control" />
+												<label className="control-label">Addresse Ligne 2</label>
+												<input defaultValue={addressLine2}
+												onChange={event => setAddressLine2(event.target.value)} type="text" className="form-control" />
 											</div>
 										</div>
 										<div className="col-md-6">
 											<div className="form-group">
-												<label className="control-label">City</label>
-												<input type="text" className="form-control" />
+												<label className="control-label">Ville</label>
+												<input defaultValue={city}
+												onChange={event => setCity(event.target.value)} type="text" className="form-control" />
 											</div>
 										</div>
 
 										<div className="col-md-6">
 											<div className="form-group">
-												<label className="control-label">State / Province</label>
-												<input type="text" className="form-control" />
+												<label className="control-label">Etat / Province</label>
+												<input defaultValue={state}
+												onChange={event => setState(event.target.value)} type="text" className="form-control" />
 											</div>
 										</div>
 										<div className="col-md-6">
 											<div className="form-group">
-												<label className="control-label">Country</label>
-												<input type="text" className="form-control" />
+												<label className="control-label">Pays</label>
+												<input defaultValue={country}
+												onChange={event => setCountry(event.target.value)} type="text" className="form-control" />
 											</div>
 										</div>
 										<div className="col-md-6">
 											<div className="form-group">
-												<label className="control-label">Postal Code</label>
-												<input type="text" className="form-control" />
+												<label className="control-label">Code Postal</label>
+												<input defaultValue={zipCode}
+												onChange={event => setZipCode(event.target.value)} type="text" className="form-control" />
 											</div>
 										</div>
 									</div>
-								</div>
-							</div>
-				
-							<div className="card">
-								<div className="card-body">
-									<h4 className="card-title">Pricing</h4>
-									
-									<div className="form-group mb-0">
-										<div id="pricing_select">
-											<div className="custom-control custom-radio custom-control-inline">
-				<input type="radio" id="price_free" name="rating_option" className="custom-control-input" defaultValue="price_free" defaultChecked />
-												<label className="custom-control-label" htmlFor="price_free">Free</label>
-											</div>
-											<div className="custom-control custom-radio custom-control-inline">
-												<input type="radio" id="price_custom" name="rating_option" defaultValue="custom_price" className="custom-control-input" />
-												<label className="custom-control-label" htmlFor="price_custom">Custom Price (per hour)</label>
-											</div>
-										</div>
-
-									</div>
-									
-									<div className="row custom_price_cont" id="custom_price_cont" style={{display: 'none'}}>
-										<div className="col-md-4">
-                                            <input type="text" className="form-control" id="custom_rating_input" 
-                                            name="custom_rating_count" defaultValue="" placeholder="20" />
-											<small className="form-text text-muted">Custom price you can add</small>
-										</div>
-									</div>
-									
 								</div>
 							</div>
 					
 							<div className="card services-card">
 								<div className="card-body">
-									<h4 className="card-title">Services and Specialization</h4>
-									<div className="form-group">
-										<label>Services</label>
-										<ReactTagsInput key='tag1'/>
-									</div> 
-									<div className="form-group mb-0">
-										<label>Specialization </label>
-										<ReactTagsInput key='tag2'/>
-										<small className="form-text text-muted">Note : Type & Press  enter to add new specialization</small>
-									</div> 
+									<h4 className="card-title">Services and Spécialisation</h4>
+									<div className="col-md-6">
+										<div className="form-group">
+											<label className="control-label">Services</label>
+											<input defaultValue={services}
+												onChange={event => setServices(event.target.value)} type="text" className="form-control" />
+										</div>
+									</div>
+									<div className="col-md-6">
+										<div className="form-group">
+											<label className="control-label">Spécialisation</label>
+											<input defaultValue={speciality}
+												onChange={event => setSpeciality(event.target.value)} type="text" className="form-control" />
+										</div>
+									</div>
 								</div>              
-							</div>
-						
-						<Education />
-						<Experience />
-						<Award />
-						<Memberships />	
-						<Registration />	
-					
-							
+							</div>	
 							<div className="submit-section submit-btn-bottom">
-								<button type="submit" className="btn btn-primary submit-btn">Save Changes</button>
+								<button onClick={saveChanges} type="submit" className="btn btn-primary submit-btn">Enregistrer</button>
 							</div>
 							
 						</div>
@@ -282,9 +245,7 @@ class ProfileSetting extends Component {
 			</div>	
         </div>
      
-        );
-
-    }
+    );
 }
 
 export default ProfileSetting;

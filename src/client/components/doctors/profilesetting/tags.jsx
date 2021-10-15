@@ -49,8 +49,8 @@ class ReactTagsInput extends React.Component {
                     suggestions={suggestions}
                     handleDelete={this.handleDelete}
                     handleAddition={this.handleAddition}
-                   
-                    delimiters={delimiters} />
+                    delimiters={delimiters} 
+                />
             </div>
         )
     }

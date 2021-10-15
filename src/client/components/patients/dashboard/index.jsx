@@ -25,9 +25,9 @@ class Dashboard extends Component {
   }
 
   handleSelect(key) {
-  
     this.setState({ key });
   }
+  
   render() {
     return (
       <div className="content">
@@ -969,17 +969,17 @@ class Dashboard extends Component {
                                     </div>
                                   </td>
                                 </tr>
-                              </tbody> 
+                              </tbody>
                             </table>
                           </div>
                         </div>
                       </div>
                     </Tab>
                   </Tabs>
-                </div> 
+                </div>
               </div>
             </div>
-          </div> 
+          </div>
         </div>
       </div>
     );

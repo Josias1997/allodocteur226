@@ -1,10 +1,14 @@
-import React, {Component} from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import {IMG01, IMG02,} from './img';
 
-import {Tooltip, OverlayTrigger}from 'react-bootstrap';
-class VoiceCall extends Component{
-   
-    render(){
+import {Tooltip, OverlayTrigger} from 'react-bootstrap';
+
+const VoiceCall = () => {
+    const user = useSelector(state => state.auth.user);
+    const location = useLocation();
+    const { callTarget } = location.state;
 
         return(
             <div className="content">
@@ -26,7 +30,7 @@ class VoiceCall extends Component{
                                                     </a>
                                                 </div>
                                                 <div className="user-info float-left">
-                                                    <a href="/doctor/patient-profile"><span>Charlene Reed</span></a>
+                                                    <a href="/doctor/patient-profile"><span>{callTarget.firstName} {callTarget.lastName}</span></a>
                                                     <span className="last-seen">En ligne</span>
                                                 </div>
                                             </div>
@@ -45,7 +49,7 @@ class VoiceCall extends Component{
                                         <div className="call-content-wrap">
                                             <div className="voice-call-avatar">
                                                 <img src={IMG02} alt="User " className="call-avatar" />
-                                                <span className="username">Dr. Darren Elder</span>
+                                                <span className="username">{callTarget.firstName} {callTarget.lastName}</span>
                                                 <span className="call-timing-count">00:59</span>
                                             </div>
                                             <div className="call-users">
@@ -109,8 +113,7 @@ class VoiceCall extends Component{
             </div>
 
         </div>
-        );
-    }
+    );
 }
 
 export default VoiceCall;

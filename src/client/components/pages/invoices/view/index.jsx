@@ -1,12 +1,23 @@
-import React, {Component} from 'react';
-import {IMG01} from './img';
-class InvoiceView extends Component{
-    render(){
-        return(
-            <div>
-            		<div className="content">
-				<div className="container-fluid">
+import React, { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import ReactToPdf from 'react-to-pdf';
 
+import {IMG01} from './img';
+import dayjs from 'dayjs';
+
+
+const InvoiceView = () => {
+  const [generatingPdf, setGeneratingPdf] = useState(false);
+  const user = useSelector(state => state.auth.user);
+  const speciality = JSON.parse(localStorage.getItem("@speciality"));
+  const date = localStorage.getItem("@date");
+  const timeSlot = localStorage.getItem("@timeSlot");
+  const bookingType = localStorage.getItem("@bookingType");
+  const pdfRef = useRef();
+  return(
+    <div>
+  		<div className="content" ref={pdfRef}>
+				<div className="container-fluid">
 					<div className="row">
 						<div className="col-lg-8 offset-lg-2">
 							<div className="invoice-content">
@@ -19,54 +30,45 @@ class InvoiceView extends Component{
 										</div>
 										<div className="col-md-6">
 											<p className="invoice-details">
-												<strong>Order:</strong> #00124 
-												<strong>Issued:</strong> 20/07/2019
+												<strong>Commande:</strong>#00124
+												<strong> Tiré:</strong> {dayjs().format('LL')}
 											</p>
 										</div>
 									</div>
 								</div>
-								
-								
 								<div className="invoice-item">
 									<div className="row">
 										<div className="col-md-6">
 											<div className="invoice-info">
-												<strong className="customer-text">Invoice From</strong>
+												<strong className="customer-text">Facture de AlloDocteur226</strong>
 												<p className="invoice-details invoice-details-two">
-													Dr. Darren Elder 
-													806  Twin Willow Lane, Old Forge
-													Newyork, USA 
+                          {speciality.description ? "" : "Consultation"} {speciality.name}
 												</p>
+                        <p className="invoice-details invoice-details-two">{speciality.description}</p>
 											</div>
 										</div>
 										<div className="col-md-6">
 											<div className="invoice-info invoice-info2">
-												<strong className="customer-text">Invoice To</strong>
+												<strong className="customer-text">Destination</strong>
 												<p className="invoice-details">
-													Walter Roberson 
-													299 Star Trek Drive, Panama City, 
-													Florida, 32405, USA 
+                          {user?.name}
 												</p>
 											</div>
 										</div>
 									</div>
 								</div>
-							
-								<div className="invoice-item">
+							  <div className="invoice-item">
 									<div className="row">
 										<div className="col-md-12">
 											<div className="invoice-info">
-												<strong className="customer-text">Payment Method</strong>
+												<strong className="customer-text">Methode Paiement</strong>
 												<p className="invoice-details invoice-details-two">
-													Debit Card 
-													XXXXXXXXXXXX-2541 
-													HDFC Bank
+                          Orange Money
 												</p>
 											</div>
 										</div>
 									</div>
 								</div>
-								
 								<div className="invoice-item invoice-table-wrap">
 									<div className="row">
 										<div className="col-md-12">
@@ -75,24 +77,31 @@ class InvoiceView extends Component{
 													<thead>
 														<tr>
 															<th>Description</th>
-															<th className="text-center">Quantity</th>
+															<th className="text-center">Quantité</th>
 															<th className="text-center">VAT</th>
 															<th className="text-right">Total</th>
 														</tr>
 													</thead>
 													<tbody>
-														<tr>
-															<td>General Consultation</td>
+                            {
+                              speciality.description ? <tr>
+  															<td>{speciality.description}</td>
+  															<td className="text-center">1</td>
+  															<td className="text-center">0 FCFA</td>
+  															<td className="text-right">{speciality.price} FCFA</td>
+  														</tr> : <tr>
+  															<td>Consultation Général</td>
+  															<td className="text-center">1</td>
+  															<td className="text-center">0 FCFA</td>
+  															<td className="text-right">{speciality.price} FCFA</td>
+  														</tr>
+                            }
+                            {bookingType === "online" && <tr>
+															<td>Frais de consulation en ligne</td>
 															<td className="text-center">1</td>
-															<td className="text-center">$0</td>
-															<td className="text-right">$100</td>
-														</tr>
-														<tr>
-															<td>Video Call Booking</td>
-															<td className="text-center">1</td>
-															<td className="text-center">$0</td>
-															<td className="text-right">$250</td>
-														</tr>
+															<td className="text-center">0 FCFA</td>
+															<td className="text-right">5000 FCFA</td>
+														</tr>}
 													</tbody>
 												</table>
 											</div>
@@ -102,16 +111,8 @@ class InvoiceView extends Component{
 												<table className="invoice-table-two table">
 													<tbody>
 													<tr>
-														<th>Subtotal:</th>
-														<td><span>$350</span></td>
-													</tr>
-													<tr>
-														<th>Discount:</th>
-														<td><span>-10%</span></td>
-													</tr>
-													<tr>
-														<th>Total Amount:</th>
-														<td><span>$315</span></td>
+														<th>Somme Totale:</th>
+														<td><span>{speciality.price} FCFA</span></td>
 													</tr>
 													</tbody>
 												</table>
@@ -119,24 +120,37 @@ class InvoiceView extends Component{
 										</div>
 									</div>
 								</div>
-							
-								
 								<div className="other-info">
 									<h4>Other information</h4>
 									<p className="text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed dictum ligula, cursus blandit risus. Maecenas eget metus non tellus dignissim aliquam ut a ex. Maecenas sed vehicula dui, ac suscipit lacus. Sed finibus leo vitae lorem interdum, eu scelerisque tellus fermentum. Curabitur sit amet lacinia lorem. Nullam finibus pellentesque libero.</p>
 								</div>
-							
-								
 							</div>
 						</div>
 					</div>
-
 				</div>
-
-			</div>		
-
-         </div>
-        );
-    }
+			</div>
+      <div className="col-md-12 my-4 d-flex justify-content-center">
+        <ReactToPdf targetRef={pdfRef} filename="facture.pdf" options={{
+            orientation: "landscape",
+            unit: "in",
+            format: [4,2]
+          }} x={.5} y={.5} scale={0.8} onComplete={() => setGeneratingPdf(false)}>
+          {({ toPdf }) => (
+            <button
+              onClick={() => {
+                setGeneratingPdf(true);
+                toPdf();
+              }}
+              className="btn btn-primary btn-lg"
+            >
+              {generatingPdf && <span className="spinner-grow spinner-grow-sm mr-2" role="status" aria-hidden="true"></span>}
+              <i className="fa fa-download"></i>
+              Télécharger Facture
+            </button>
+          )}
+        </ReactToPdf>
+      </div>
+    </div>
+  );
 }
 export default InvoiceView;

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 
 import { IMG01, IMG02 } from "./img";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
-class VideoCall extends Component {
-  render() {
+
+const VideoCall = () => {
     return (
       <>
         <div className="content">
@@ -150,7 +150,6 @@ class VideoCall extends Component {
         </div>
       </>
     );
-  }
 }
 
 export default VideoCall;

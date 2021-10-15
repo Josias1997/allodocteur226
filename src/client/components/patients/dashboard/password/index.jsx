@@ -1,22 +1,34 @@
-import React,{ Component } from 'react';
+import React, { useState, useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { FirebaseContext } from 'common';
 import DashboardSidebar from '../sidebar/sidebar.jsx';
 
 import StickyBox from "react-sticky-box";
-class Password extends Component{
-    render(){
-        return(
-            <div>
-                <div className="breadcrumb-bar">
+
+const Password = () => {
+	const { api } = useContext(FirebaseContext);
+	const dispatch = useDispatch();
+	const [oldPassword, setOldPassword] = useState('');
+	const [newPassword, setNewPassword] = useState('');
+	const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
+
+	const changePassword = () => {
+
+	};
+
+    return(
+        <div>
+            <div className="breadcrumb-bar">
 				<div className="container-fluid">
 					<div className="row align-items-center">
 						<div className="col-md-12 col-12">
 							<nav aria-label="breadcrumb" className="page-breadcrumb">
 								<ol className="breadcrumb">
-									<li className="breadcrumb-item"><a href="/home">Home</a></li>
-									<li className="breadcrumb-item active" aria-current="page">Profile Settings</li>
+									<li className="breadcrumb-item"><a href="/home">Accueil</a></li>
+									<li className="breadcrumb-item active" aria-current="page">Paramètres Profil</li>
 								</ol>
 							</nav>
-							<h2 className="breadcrumb-title">Profile Settings</h2>
+							<h2 className="breadcrumb-title">Paramètres Profil</h2>
 						</div>
 					</div>
 				</div>
@@ -35,19 +47,19 @@ class Password extends Component{
                                      <div className="card-body">
                                      <form>
 												<div className="form-group">
-													<label>Old Password</label>
-													<input type="password" className="form-control" />
+													<label>Ancien mot de passe</label>
+													<input onChange={event => setOldPassword(event.target.value)} type="password" className="form-control" />
 												</div>
 												<div className="form-group">
-													<label>New Password</label>
-													<input type="password" className="form-control" />
+													<label>Nouveau mot de passe</label>
+													<input onChange={event => setNewPassword(event.target.value)} type="password" className="form-control" />
 												</div>
 												<div className="form-group">
-													<label>Confirm Password</label>
-													<input type="password" className="form-control" />
+													<label>Confirmer le mot de passe</label>
+													<input onChange={event => setNewPasswordConfirm(event.target.value)} type="password" className="form-control" />
 												</div>
 												<div className="submit-section">
-													<button type="submit" className="btn btn-primary submit-btn">Save Changes</button>
+													<button onClick={changePassword} type="submit" className="btn btn-primary submit-btn">Save Changes</button>
 												</div>
 											</form>
                                          
@@ -57,9 +69,8 @@ class Password extends Component{
                     </div>
                 </div>
             </div>      
-            </div>
-        );
-   }
+        </div>
+    );
 } 
 export default Password;   
         

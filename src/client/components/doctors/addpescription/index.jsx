@@ -1,7 +1,13 @@
-import React, {Component } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import { FirebaseContext } from 'common';
 import PatientSidebar from '../patienttsidebar';
-class AddPescription extends Component{
-    render(){
+
+const AddPescription = () => {
+	const { api } = useContext(FirebaseContext);
+	const dispatch = useDispatch();
+	const user = useSelector(state => state.auth.user);
+
         return(
             <div>
                 <div className="breadcrumb-bar">
@@ -10,11 +16,11 @@ class AddPescription extends Component{
 						<div className="col-md-12 col-12">
 							<nav aria-label="breadcrumb" className="page-breadcrumb">
 								<ol className="breadcrumb">
-									<li className="breadcrumb-item"><a href="/home">Home</a></li>
-									<li className="breadcrumb-item active" aria-current="page">Add Prescription</li>
+									<li className="breadcrumb-item"><a href="/home">Accueil</a></li>
+									<li className="breadcrumb-item active" aria-current="page">Ajouter une prescription</li>
 								</ol>
 							</nav>
-							<h2 className="breadcrumb-title">Add Prescription</h2>
+							<h2 className="breadcrumb-title">Ajouter une prescription</h2>
 						</div>
 					</div>
 				</div>
@@ -31,15 +37,15 @@ class AddPescription extends Component{
                         <div className="col-md-7 col-lg-8 col-xl-9">
                         <div className="card">
 								<div className="card-header">
-									<h4 className="card-title mb-0">Add Prescription</h4>
+									<h4 className="card-title mb-0">Ajouter une prescription</h4>
 								</div>
 								<div className="card-body">
 									<div className="row">
 										<div className="col-sm-6">
 											<div className="biller-info">
-												<h4 className="d-block">Dr. Darren Elder</h4>
-												<span className="d-block text-sm text-muted">Dentist</span>
-												<span className="d-block text-sm text-muted">Newyork, United States</span>
+												<h4 className="d-block">Dr. {user?.firstName} {user?.lastName}</h4>
+												<span className="d-block text-sm text-muted">{user?.speciality}</span>
+												<span className="d-block text-sm text-muted">{user?.city} {user?.country}</span>
 											</div>
 										</div>
 										<div className="col-sm-6 text-sm-right">
@@ -52,7 +58,7 @@ class AddPescription extends Component{
 									
 								
 									<div className="add-more-item text-right">
-										<a href="#0" ><i className="fas fa-plus-circle"></i> Add Item</a>
+										<a href="#0" ><i className="fas fa-plus-circle"></i> Ajouter</a>
 									</div>
 								
 									
@@ -63,10 +69,10 @@ class AddPescription extends Component{
 												<table className="table table-hover table-center">
 													<thead>
 														<tr>
-															<th style={{minWwidth: '200p'}}>Name</th>
-															<th style={{minWidth: '80px'}}>Quantity</th>
-															<th style={{minWidth: '80px'}}>Days</th>
-															<th style={{minwWidth: '100px'}}>Time</th>
+															<th style={{minWwidth: '200p'}}>Nom</th>
+															<th style={{minWidth: '80px'}}>Quantité</th>
+															<th style={{minWidth: '80px'}}>Jours</th>
+															<th style={{minwWidth: '100px'}}>Temps</th>
 															<th style={{minWidth: '80px'}}></th>
 														</tr>
 													</thead>
@@ -84,22 +90,22 @@ class AddPescription extends Component{
 															<td>
 																<div className="form-check form-check-inline">
 																	<label className="form-check-label">
-																		<input className="form-check-input" type="checkbox" /> Morning
+																		<input className="form-check-input" type="checkbox" /> Matin
 																	</label>
 																</div>
 																<div className="form-check form-check-inline">
 																	<label className="form-check-label">
-																		<input className="form-check-input" type="checkbox" /> Afternoon
+																		<input className="form-check-input" type="checkbox" /> Midi
 																	</label>
 																</div>
 																<div className="form-check form-check-inline">
 																	<label className="form-check-label">
-																		<input className="form-check-input" type="checkbox" /> Evening
+																		<input className="form-check-input" type="checkbox" /> Soir
 																	</label>
 																</div>
 																<div className="form-check form-check-inline">
 																	<label className="form-check-label">
-																		<input className="form-check-input" type="checkbox" /> Night
+																		<input className="form-check-input" type="checkbox" /> Nuit
 																	</label>
 																</div>
 															</td>
@@ -117,10 +123,10 @@ class AddPescription extends Component{
 										<div className="col-md-12 text-right">
 											<div className="signature-wrap">
 												<div className="signature">
-													Click here to sign
+													Cliquer ici pour signer
 												</div>
 												<div className="sign-name">
-													<p className="mb-0">( Dr. Darren Elder )</p>
+													<p className="mb-0">( Dr. {user?.firstName} {user?.lastName} )</p>
 													<span className="text-muted">Signature</span>
 												</div>
 											</div>
@@ -130,8 +136,8 @@ class AddPescription extends Component{
 									<div className="row">
 										<div className="col-md-12">
 											<div className="submit-section">
-												<button type="submit" className="btn btn-primary submit-btn">Save</button>
-												<button type="reset" className="btn btn-secondary submit-btn">Clear</button>
+												<button type="submit" className="btn btn-primary submit-btn">Enregistrer</button>
+												<button type="reset" className="btn btn-secondary submit-btn">Effacer</button>
 											</div>
 										</div>
 									</div>
@@ -144,8 +150,7 @@ class AddPescription extends Component{
                     </div>
             </div>
         </div>
-        )
-    }
+    );
 }
 
 export default AddPescription;

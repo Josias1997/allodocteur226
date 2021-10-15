@@ -1,10 +1,8 @@
 import React from 'react';
-import { Link, useParams } from "react-router-dom";
-import List from './searchList';
+import { Link } from "react-router-dom";
+import List from './packageList';
 
-const ChooseSpeciality = () => {
-	const { bookingType } = useParams();
-	localStorage.setItem("@bookingType", bookingType);
+const ChoosePackage = () => {
 	return (
 		<div>
 			<div className="breadcrumb-bar">
@@ -14,10 +12,10 @@ const ChooseSpeciality = () => {
 		                <nav aria-label="breadcrumb" className="page-breadcrumb">
 		                    <ol className="breadcrumb">
 		                        <li className="breadcrumb-item"><Link to="/home">Accueil</Link></li>
-		                        <li className="breadcrumb-item active" aria-current="page">Choix Spécialité</li>
+		                        <li className="breadcrumb-item active" aria-current="page">Choix Package Assurance</li>
 		                    </ol>
 		                </nav>
-		                <h2 className="breadcrumb-title">Choix Spécialité</h2>
+		                <h2 className="breadcrumb-title">Choix Package Assurance</h2>
 		            </div>
 		        </div>
 		    </div>
@@ -34,4 +32,4 @@ const ChooseSpeciality = () => {
 		</div>
 	);
 }
-export default ChooseSpeciality;
+export default ChoosePackage;

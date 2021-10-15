@@ -1,20 +1,21 @@
 import React, { useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { FirebaseContext } from "common";
 
 import IMG01 from '../../../../assets/images/patient.jpg';
 
 
-export const DashboardSidebar = ({ history }) => {
+export const DashboardSidebar = () => {
 	const { api } = useContext(FirebaseContext);
 	const dispatch = useDispatch();
 	const user = useSelector(state => state.auth.user);
+	const history = useHistory();
 
 	useEffect(() => {
 		if (!user) {
 			history.push("/login");
-		} 
+		}
 	}, [user])
 
     return(
@@ -25,10 +26,10 @@ export const DashboardSidebar = ({ history }) => {
 						<img src={IMG01} alt="User" />
 					</a>
 					<div className="profile-det-info">
-						<h3>{user.name}</h3>
+						<h3>{user?.firstName} {user?.lastName}</h3>
 						<div className="patient-details">
-							<h5><i className="fas fa-birthday-cake"></i> 24 Jul 1983, 38 years</h5>
-							<h5 className="mb-0"><i className="fas fa-map-marker-alt"></i> {user.location}</h5>
+							<h5><i className="fas fa-birthday-cake"></i> {user?.birthDate}</h5>
+							<h5 className="mb-0"><i className="fas fa-map-marker-alt"></i> {user?.address}</h5>
 						</div>
 					</div>
 				</div>
@@ -43,16 +44,9 @@ export const DashboardSidebar = ({ history }) => {
 							</Link>
 						</li>
 						<li>
-							<Link to="/patient/favourites">
-								<i className="fas fa-bookmark"></i>
-								<span>Favoris</span>
-							</Link>
-						</li>
-						<li>
-							<Link to="/doctor/chat-doctor">
+							<Link to="/patient/patient-chat">
 								<i className="fas fa-comments"></i>
-								<span>Message</span>
-								<small className="unread-msg">23</small>
+								<span>Messages</span>
 							</Link>
 						</li>
 						<li>
@@ -68,7 +62,7 @@ export const DashboardSidebar = ({ history }) => {
 							</Link>
 						</li>
 						<li>
-							<Link onClick={dispatch(api.signOut())}>
+							<Link to="#" onClick={() => dispatch(api.signOut())}>
 								<i className="fas fa-sign-out-alt"></i>
 								<span>Déconnexion</span>
 							</Link>
