@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { FirebaseContext } from "common";
 
@@ -11,6 +11,7 @@ export const DashboardSidebar = () => {
 	const dispatch = useDispatch();
 	const user = useSelector(state => state.auth.user);
 	const history = useHistory();
+	const location = useLocation();
 
 	useEffect(() => {
 		if (!user) {
@@ -28,7 +29,7 @@ export const DashboardSidebar = () => {
 					<div className="profile-det-info">
 						<h3>{user?.firstName} {user?.lastName}</h3>
 						<div className="patient-details">
-							<h5><i className="fas fa-birthday-cake"></i> {user?.birthDate}</h5>
+							<h5><i className="fas fa-birthday-cake"></i> {user?.country}</h5>
 							<h5 className="mb-0"><i className="fas fa-map-marker-alt"></i> {user?.address}</h5>
 						</div>
 					</div>
@@ -37,25 +38,25 @@ export const DashboardSidebar = () => {
 			<div className="dashboard-widget">
 				<nav className="dashboard-menu">
 					<ul>
-						<li className="active">
+						<li className={location.pathname.includes("/patient/dashboard") ? "active" : ""}>
 							<Link to="/patient/dashboard">
 								<i className="fas fa-columns"></i>
 								<span>Tableau de bord</span>
 							</Link>
 						</li>
-						<li>
-							<Link to="/patient/patient-chat">
+						<li className={location.pathname.includes("/patient/chat") ? "active" : ""}>
+							<Link to="/patient/chat">
 								<i className="fas fa-comments"></i>
 								<span>Messages</span>
 							</Link>
 						</li>
-						<li>
+						<li className={location.pathname.includes("/patient/profile") ? "active" : ""}>
 							<Link to="/patient/profile">
 								<i className="fas fa-user-cog"></i>
 								<span>Paramètres Profil</span>
 							</Link>
 						</li>
-						<li>
+						<li className={location.pathname.includes("/patient/change-password") ? "active" : ""}>
 							<Link to="/patient/change-password">
 								<i className="fas fa-lock"></i>
 								<span>Changer de mot de passe</span>

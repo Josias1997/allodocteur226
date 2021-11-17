@@ -4,9 +4,9 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { FirebaseContext } from 'common';
 import { AgoraVideoPlayer } from 'agora-rtc-react';
 
-import { IMG01, IMG02 } from "./img";
+import { IMG02 } from "./img";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
-import { useRTC, useRemoteVideoTrack } from '../../../../rtccontext';
+import { useRTC, useRemoteVideoTrack } from '../../../rtccontext';
 
 const VideoCall = () => {
     const { api } = useContext(FirebaseContext);

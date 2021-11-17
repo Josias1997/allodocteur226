@@ -32,20 +32,17 @@ class SidebarNav extends Component {
               <li className={pathname === '/admin' ?"active" :""}>
                 <Link to="/admin"><i className="fe fe-home" /> <span>Tableau de bord</span></Link>
               </li>
-              <li className={pathname.includes('appointment-list') ?"active" :""}>
-                <Link to="/admin/appointment-list"><i className="fe fe-layout" /> <span>Consultations</span></Link>
+              <li className={pathname.includes('appointments') ?"active" :""}>
+                <Link to="/admin/appointments"><i className="fe fe-layout" /> <span>Consultations</span></Link>
               </li>
-              <li className={pathname.includes('doctor-list') ?"active" :""}>
-                <Link to="/admin/doctor-list"><i className="fe fe-user-plus" /> <span>Docteurs</span></Link>
+              <li className={pathname.includes('patients') ?"active" :""}>
+                <Link to="/admin/patients"><i className="fe fe-user" /> <span>Patients</span></Link>
               </li>
-              <li className={pathname.includes('patient-list') ?"active" :""}>
-                <Link to="/admin/patient-list"><i className="fe fe-user" /> <span>Patients</span></Link>
+              <li className={pathname.includes('chat') ?"active" :""}>
+                <Link to="/admin/chat"><i className="fe fe-comments" /> <span>Messages</span></Link>
               </li>
-              <li className={pathname.includes('transactions-list') ?"active" :""}>
-                <Link to="/admin/transactions-list"><i className="fe fe-activity" /> <span>Transactions</span></Link>
-              </li>
-              <li className={pathname.includes('settings') ?"active" :""}>
-                <Link to="/admin/settings"><i className="fe fe-vector" /> <span>Paramètres</span></Link>
+              <li className={pathname.includes('prescriptions') ?"active" :""}>
+                <Link to="/admin/prescriptions"><i className="fe fe-feed" /> <span>Prescriptions</span></Link>
               </li>
               <li className={pathname.includes('profile') ?"active" :""}>
                 <Link to="/admin/profile"><i className="fe fe-user-plus" /> <span>Profil</span></Link>

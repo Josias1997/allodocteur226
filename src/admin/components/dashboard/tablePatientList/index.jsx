@@ -6,16 +6,16 @@ import 'antd/dist/antd.css';
 import IMG01 from '../../../assets/images/doctors/doctor-thumb-01.jpg';
 
 const TablePatientsList = () => {
-    const patients = useSelector(state => state.admin.patients);
+    const users = useSelector(state => state.admin.users);
 
     const columns = [
         {
             title: 'Nom Patient',
-            dataIndex: 'name',
+            dataIndex: 'firstName',
             render: (text, record) => (            
                 <h2 className="table-avatar">
                   <a href="/admin/profile" className="avatar avatar-sm mr-2"><img alt="" src={IMG01} /></a>
-                  <a href="/admin/profile">{text}</a>
+                  <a href="/admin/profile">{record.firstName} {record.lastName}</a>
                 </h2>
               ), 
         },
@@ -28,10 +28,10 @@ const TablePatientsList = () => {
             dataIndex: 'phoneNumber',
         },
         {
-            title: 'Assurance',
+            title: 'Assurance Maladies',
             dataIndex: 'insurance',
             render: (text, record) => (
-                <p>{record.insurance.number} Consultations</p>
+                <p>{record.insurance ? record.insurance.number : "0"} Consultations</p>
             )
         },
           
@@ -43,7 +43,7 @@ const TablePatientsList = () => {
                 style = {{overflowX : 'auto'}}
                 columns={columns}                 
                   // bordered
-                dataSource={patients.slice(0, 3)}
+                dataSource={users.slice(0, 3)}
                 rowKey={record => record.id}
                 pagination={false} 
             />

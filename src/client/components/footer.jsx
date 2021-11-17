@@ -26,9 +26,7 @@ const Footer = (props) => {
                 </div>
                 <div className="footer-about-content">
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.{" "}
+                    Réserver vos consultations en ligne ou à domicile depuis notre site web.{" "}
                   </p>
                   <div className="social-icon">
                     <ul>
@@ -65,11 +63,8 @@ const Footer = (props) => {
 
             <div className="col-lg-3 col-md-6">
               <div className="footer-widget footer-menu">
-                <h2 className="footer-title">Pour les patients</h2>
+                <h2 className="footer-title">Liens rapides</h2>
                 <ul>
-                  <li>
-                    <Link to="/patient/search-doctor">Recherche des docteurs</Link>
-                  </li>
                   <li>
                     <Link to="/login">Connexion</Link>
                   </li>
@@ -77,7 +72,7 @@ const Footer = (props) => {
                     <Link to="/register">Inscription</Link>
                   </li>
                   <li>
-                    <Link to="/patient/booking">Réservation</Link>
+                    <Link to="/patient/choose-speciality/house">Consultation à Domicile</Link>
                   </li>
                   <li>
                     <Link to="/patient/dashboard">Tableau de bord patient</Link>
@@ -88,22 +83,22 @@ const Footer = (props) => {
 
             <div className="col-lg-3 col-md-6">
               <div className="footer-widget footer-menu">
-                <h2 className="footer-title">Pour les docteurs</h2>
+                <h2 className="footer-title">Liens rapides</h2>
                 <ul>
                   <li>
-                    <Link to="/doctor/appointments">Rendez vous</Link>
+                    <Link to="/terms">Termes et Conditions</Link>
                   </li>
                   <li>
-                    <Link to="/doctor/chat-doctor">Chat</Link>
+                    <Link to="/privacy-policy">Confidentialité</Link>
                   </li>
                   <li>
-                    <Link to="/login">Connexion</Link>
+                    <Link to="/patient/chat">Discuter avec un docteur</Link>
                   </li>
                   <li>
-                    <Link to="/doctor/doctor-register">Inscription</Link>
+                    <Link to="/doctor/doctor-register">Assurance Maladies</Link>
                   </li>
                   <li>
-                    <Link to="/doctor/doctor-dashboard">Tableau de bord Docteur</Link>
+                    <Link to="/patient/choose-speciality/house">Consultation en ligne</Link>
                   </li>
                 </ul>
               </div>
@@ -128,7 +123,7 @@ const Footer = (props) => {
                   </p>
                   <p className="mb-0">
                     <i className="fa fa-envelope" aria-hidden="true"></i>
-                    dominioncode@example.com
+                    eidogs@gmail.com
                   </p>
                 </div>
               </div>
@@ -152,10 +147,10 @@ const Footer = (props) => {
                 <div className="copyright-menu">
                   <ul className="policy-menu">
                     <li>
-                      <Link to="/pages/terms">Termes et Conditions</Link>
+                      <Link to="/terms">Termes et Conditions</Link>
                     </li>
                     <li>
-                      <Link to="/pages/privacy-policy">Confidentialité</Link>
+                      <Link to="/privacy-policy">Confidentialité</Link>
                     </li>
                   </ul>
                 </div>

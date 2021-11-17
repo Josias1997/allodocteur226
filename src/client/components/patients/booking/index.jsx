@@ -6,7 +6,7 @@ import { Link, useLocation, useHistory, Redirect } from 'react-router-dom';
 import IMG01 from '../../../assets/images/doctor-thumb-02.jpg';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import 'bootstrap-daterangepicker/daterangepicker.css';
-import dayjs from "dayjs";
+import moment from "moment";
 
 const days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
 const months = ["Jan", "Fev", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sept", "Oct", "Nov", "Déc"];
@@ -15,8 +15,8 @@ const Booking = () => {
 	const { api } = useContext(FirebaseContext);
 	const dispatch = useDispatch();
 	const user = useSelector(state => state.auth.user);
-	const [startDate, setStartDate] = useState(dayjs());
-	const [endDate, setEndDate] = useState(dayjs().add(6, 'd'));
+	const [startDate, setStartDate] = useState(moment());
+	const [endDate, setEndDate] = useState(moment().add(6, 'd'));
 	const [dates, setDates] = useState([]);
 	const [datePage, setDatePage] = useState(0);
 	const [currentDate, setCurrentDate] = useState(startDate);
@@ -33,11 +33,11 @@ const Booking = () => {
 
 	useEffect(() => {
 		const newDates = [];
-		let dateCursor = dayjs(startDate).add(datePage * 6, 'd');
-		let maxDate = dayjs(startDate).add((datePage + 1) * 6, 'd') >= endDate ? endDate : dayjs(startDate).add((datePage + 1) * 6, 'd');
+		let dateCursor = moment(startDate).add(datePage * 6, 'd');
+		let maxDate = moment(startDate).add((datePage + 1) * 6, 'd') >= endDate ? endDate : moment(startDate).add((datePage + 1) * 6, 'd');
 		while(dateCursor <= maxDate){
 			newDates.push(dateCursor);
-			dateCursor = dayjs(dateCursor).add(1, 'd');
+			dateCursor = moment(dateCursor).add(1, 'd');
 		}
 		setDates(newDates);
 		setCurrentDate(startDate);
@@ -55,19 +55,28 @@ const Booking = () => {
 	};
 	const handleTimeSelect = (date, time) => {
 		localStorage.setItem("@timeSlot", timeSlot);
-		localStorage.setItem("@date", dayjs(date).format("LL"));
+		localStorage.setItem("@date", moment(date).format("L"));
 		localStorage.setItem("@speciality", JSON.stringify(location.speciality))
 		setCurrentDate(date);
 		setTimeSlot(time);
 	};
 
 	const useInsurance = () => {
+		dispatch(api.createAppointment({
+			patient: {
+				...user
+			},
+			date: `${localStorage.getItem("@date")} ${localStorage.getItem("@timeSlot")}:00`,
+			speciality: location.speciality,
+			type: bookingType
+		}));
 		dispatch(api.updateUser(user.id, {
 			insurance: {
 				...user.insurance,
-				number: user.insurance > 0 ? user.insurance - 1 : 0
+				number: user.insurance.number > 0 ? user.insurance.number - 1 : 0
 			}
 		}));
+		localStorage.setItem("@speciality", JSON.stringify(location.speciality))
 		history.push('/patient/booking-success');
 	}
   return(
@@ -106,8 +115,8 @@ const Booking = () => {
 							</div>
 							<div className="row">
 								<div className="col-12 col-sm-4 col-md-6">
-									<h4 className="mb-1">{dayjs(currentDate).format('LL')}</h4>
-									<p className="text-muted">{days[dayjs(currentDate).day()]}</p>
+									<h4 className="mb-1">{moment(currentDate).format('LL')}</h4>
+									<p className="text-muted">{days[moment(currentDate).day()]}</p>
 								</div>
 								<div className="col-12 col-sm-8 col-md-6 text-sm-right">
 								<div className="datepicker-icon">
@@ -143,10 +152,10 @@ const Booking = () => {
 														</Link>
 													</li>
 													{dates.map((date, index) => (<li key={index}>
-														<span>{days[dayjs(date).day()]} </span>
+														<span>{days[moment(date).day()]} </span>
 														<span className="slot-date">
-															{dayjs(date).date()} {months[dayjs(date).month()]}
-															<small className="slot-year"> {dayjs(date).year()}</small>
+															{moment(date).date()} {months[moment(date).month()]}
+															<small className="slot-year"> {moment(date).year()}</small>
 														</span>
 													</li>))}
 													<li className="right-arrow">
@@ -190,12 +199,9 @@ const Booking = () => {
 									</div>
 								</div>
 							</div>
-							<div>
-
-							</div>
 							<div className="submit-section proceed-btn text-right">
-								{user?.insurance?.number > 0 && <button onClick={useInsurance} className="btn btn-primary submit-btn mr-3">Utiliser l'assurance</button>}
-								<Link to="/patient/checkout" className="btn btn-primary submit-btn">Procéder au paiement</Link>
+								{user?.insurance?.number > 0 && <button onClick={useInsurance} className="btn btn-primary submit-btn mr-3 my-2">Utiliser l'assurance</button>}
+								<Link to="/patient/checkout" className="btn btn-primary submit-btn mr-3 my-2">Procéder au paiement</Link>
 							</div>
 						</div>
 					</div>

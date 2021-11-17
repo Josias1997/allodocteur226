@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import ReactToPdf from 'react-to-pdf';
 
 import {IMG01} from './img';
-import dayjs from 'dayjs';
+import moment from 'moment';
 
 
 const InvoiceView = () => {
@@ -31,7 +31,7 @@ const InvoiceView = () => {
 										<div className="col-md-6">
 											<p className="invoice-details">
 												<strong>Commande:</strong>#00124
-												<strong> Tiré:</strong> {dayjs().format('LL')}
+												<strong> Tiré:</strong> {moment().format('LL')}
 											</p>
 										</div>
 									</div>
@@ -51,7 +51,7 @@ const InvoiceView = () => {
 											<div className="invoice-info invoice-info2">
 												<strong className="customer-text">Destination</strong>
 												<p className="invoice-details">
-                          {user?.name}
+                          {user?.firtName} {user?.lastName}
 												</p>
 											</div>
 										</div>
@@ -121,7 +121,7 @@ const InvoiceView = () => {
 									</div>
 								</div>
 								<div className="other-info">
-									<h4>Other information</h4>
+									<h4>Autre information</h4>
 									<p className="text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed dictum ligula, cursus blandit risus. Maecenas eget metus non tellus dignissim aliquam ut a ex. Maecenas sed vehicula dui, ac suscipit lacus. Sed finibus leo vitae lorem interdum, eu scelerisque tellus fermentum. Curabitur sit amet lacinia lorem. Nullam finibus pellentesque libero.</p>
 								</div>
 							</div>

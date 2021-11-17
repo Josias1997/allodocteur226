@@ -1,84 +1,127 @@
-import React from 'react';
+import React from "react";
+import { useSelector } from "react-redux";
 
-import {  Route, BrowserRouter as Router, Switch} from 'react-router-dom';
-import Header from  './components/header/index';
-import Dashboard from './components/dashboard';
-import Appointments from './components/appointments';
-import Specialities from './components/specialities';
-import Doctors from './components/doctors';
-import Patients from './components/patients';
-import Reviews from './components/reviews';
-import Transaction from './components/transaction';
-import Settings from './components/settings';
-import InvoiceReport from './components/invoicereport';
-import Invoice from './components/invoicereport/invoice';
-import ProductList from './components/productlist';
-import PharmacyList from './components/pharmacylist';
-import Blog from './components/Blog/blog'
-import BlogDetails from './components/Blog/blogdetails'
-import AddBlog from './components/Blog/addblog'
-import EditBlog from './components/Blog/editblog'
-import PendingBlog from './components/Blog/pendingblog'
-import Profile from './components/profile';
-import Login from './components/login';
-import Register from './components/register';
-import ForgotPassword from './components/forgotpassword';
-import Lockscreen from './components/lockscreen';
-import Error from './components/error404';
-import ErrorPage from './components/error500';
-import BasicInput from './components/forms/baiscinput';
-import FormInput from './components/forminput';
-import FormHorizontal from './components/formhorizontal';
-import FormMask from './components/formask';
-import FormValidation from './components/formvalidation';
-import BlankPage from './components/blankpage';
-import Components from './components/component';
+import {
+	Route,
+	BrowserRouter as Router,
+	Switch,
+	Redirect,
+} from "react-router-dom";
+import Header from "./components/header/index";
+import Dashboard from "./components/dashboard";
+import Appointments from "./components/appointments";
+import Specialities from "./components/specialities";
+import Doctors from "./components/doctors";
+import Patients from "./components/patients";
+import Reviews from "./components/reviews";
+import Transaction from "./components/transaction";
+import Settings from "./components/settings";
+import InvoiceReport from "./components/invoicereport";
+import Invoice from "./components/invoicereport/invoice";
+import Profile from "./components/profile";
+import Login from "./components/login";
+import Register from "./components/register";
+import ForgotPassword from "./components/forgotpassword";
+import Lockscreen from "./components/lockscreen";
+import Error from "./components/error404";
+import ErrorPage from "./components/error500";
+import Chat from "./components/chat";
+import Prescriptions from "./components/prescriptions";
+import Billings from "./components/billings";
+import Call from "./components/call";
+import PatientProfile from "./components/patientprofile";
 
+import ProtectedRoute from '../ProtectedRoute'
 
 const AppUniversal = function (props) {
-    return (
-		
-			<Router>
-				<div className="main-wrapper">
-			    <Route render={(props)=> <Header {...props}/>} />
+	const user = useSelector((state) => state.auth.user);
+
+	return (
+		<Router>
+			<div className="main-wrapper">
+				<Route render={(props) => <Header {...props} />} />
 				<Switch>
-					<Route path="/admin" exact component={Dashboard} />
-					<Route path="/admin/appointment-list" exact component={Appointments} />
-					<Route path="/admin/specialities" exact component={Specialities} />
-					<Route path="/admin/doctor-list" exact component={Doctors} />
-					<Route path="/admin/patient-list" exact component={Patients} />
-					<Route path="/admin/reviews" exact component={Reviews} />
-					<Route path="/admin/profile" exact component={Profile} />
-					<Route path="/admin/transactions-list" exact component={Transaction} />
-					<Route path="/admin/settings" exact component={Settings} />
-					<Route path="/admin/invoice-report" exact component={InvoiceReport} />
-					<Route path="/admin/blog" exact component={Blog} />
-					<Route path="/admin/blog-details" exact component={BlogDetails} />
-					<Route path="/admin/add-blog" exact component={AddBlog} />
-					<Route path="/admin/edit-blog" exact component={EditBlog} />
-					<Route path="/admin/pending-blog" exact component={PendingBlog} />								
-					<Route path="/admin/product-list" exact component={ProductList} />
-					<Route path="/admin/pharmacy-list" exact component={PharmacyList} />
-					<Route path="/admin/invoice" exact component={Invoice} />
-					<Route path="/admin/login" exact component={Login} />
-					<Route path="/admin/register" exact component={Register} />
-					<Route path="/admin/forgotPassword" exact component={ForgotPassword} />
-					<Route path="/admin/lockscreen" exact component={Lockscreen} />
+					<Route
+						path="/admin/lockscreen"
+						exact
+						component={Lockscreen}
+					/>
+					<ProtectedRoute
+						path="/admin/login"
+						isLoggedIn={!(user && user.role === "admin")}
+						component={Login}
+						redirect={"/admin"}
+						exact
+					/>
+					<ProtectedRoute
+						path="/admin/register"
+						isLoggedIn={!(user && user.role === "admin")}
+						component={Register}
+						redirect={"/admin"}
+						exact
+					/>
+					<ProtectedRoute
+						path="/admin/forgot-password"
+						isLoggedIn={!(user && user.role === "admin")}
+						component={ForgotPassword}
+						redirect={"/admin"}
+						exact
+					/>
+					<ProtectedRoute
+						path="/admin"
+						isLoggedIn={user && user.role === "admin"}
+						component={Dashboard}
+						redirect={"/admin/login"}
+						exact
+					/>
+					<ProtectedRoute
+						path="/admin/appointments"
+						isLoggedIn={user && user.role === "admin"}
+						component={Appointments}
+						redirect={"/admin/login"}
+						exact
+					/>
+					<ProtectedRoute
+						path="/admin/patients"
+						isLoggedIn={user && user.role === "admin"}
+						component={Patients}
+						redirect={"/admin/login"}
+						exact
+					/>
+					<ProtectedRoute
+						path="/admin/profile"
+						isLoggedIn={user && user.role === "admin"}
+						component={Profile}
+						redirect={"/admin/login"}
+						exact
+					/>
+					<ProtectedRoute
+						path="/admin/chat"
+						isLoggedIn={user && user.role === "admin"}
+						component={Chat}
+						redirect={"/admin/login"}
+						exact
+					/>
+					<ProtectedRoute
+						path="/admin/precriptions"
+						isLoggedIn={user && user.role === "admin"}
+						component={Prescriptions}
+						redirect={"/admin/login"}
+						exact
+					/>
+					<ProtectedRoute
+						path="/admin/call"
+						isLoggedIn={user && user.role === "admin"}
+						component={Call}
+						redirect={"/admin/login"}
+						exact
+					/>
 					<Route path="/admin/404" exact component={Error} />
 					<Route path="/admin/500" exact component={ErrorPage} />
-					<Route path="/admin/blank-page" exact component={BlankPage} />
-					<Route path="/admin/components" exact component={Components} />
-					<Route path="/admin/basic-input" exact component={BasicInput} />
-					<Route path="/admin/form-input-group" exact component={FormInput} />
-					<Route path="/admin/form-horizontal" exact component={FormHorizontal} />
-					<Route path="/admin/form-mask" exact component={FormMask} />
-					<Route path="/admin/form-validation" exact component={FormValidation} />
 				</Switch>
-		       </div>
-			
-			</Router>
-    );
-}
+			</div>
+		</Router>
+	);
+};
 
 export default AppUniversal;
-

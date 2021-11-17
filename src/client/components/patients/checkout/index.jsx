@@ -14,12 +14,13 @@ const Checkout = () => {
 	const history = useHistory();
 	const dispatch = useDispatch();
 	const user = useSelector(state => state.auth.user);
-	const insuranceadded = useSelector(state => state.auth.insuranceadded);
+	const insurancePaid = useSelector(state => state.auth.insurancePaid);
+	const insuranceLoading = useSelector(state => state.auth.loading);
 	const success = useSelector(state => state.appointmentdata.uploadSuccess);
 	const loading = useSelector(state => state.appointmentdata.loading);
 	const error = useSelector(state => state.appointmentdata.error);
-	const [firstName, setFirstName] = useState(user?.name);
-	const [lastName, setLastName] = useState(user?.name);
+	const [firstName, setFirstName] = useState(user?.firstName);
+	const [lastName, setLastName] = useState(user?.lastName);
 	const [email, setEmail] = useState(user?.email);
 	const [phoneNumber, setPhoneNumber] = useState(user?.phoneNumber);
 	const [address, setAddress] = useState(user?.address);
@@ -27,16 +28,18 @@ const Checkout = () => {
 	const [country, setCountry] = useState(user?.country);
 	const [postalCode, setPostalCode] = useState(user?.postalCode);
 	const [errorMessage, setErrorMessage] = useState("");
+	const [checked, setChecked] = useState(false);
 	const { api } = useContext(FirebaseContext);
 	const date = localStorage.getItem("@date");
 	const timeSlot = localStorage.getItem('@timeSlot');
+	const bookingType = localStorage.getItem("@bookingType");
 	const speciality = JSON.parse(localStorage.getItem("@speciality"))
 
 	useEffect(() => {
-		if(success) {
+		if(success || insurancePaid) {
 			history.push("/patient/booking-success");
 		}
-	}, [success, insuranceadded])
+	}, [success, insurancePaid])
 
 	const book = (event) => {
 		const transactionId = new Date().getTime();
@@ -45,28 +48,7 @@ const Checkout = () => {
 		.then(response => {
 				cp.checkPayStatus(transactionId)
 				.then(response => {
-					if (!speciality.description) {
-						dispatch(api.createAppointment({
-							patient: {
-								firstName,
-								lastName,
-								email,
-								phoneNumber,
-								address,
-								city,
-								country,
-								id: user.id
-							},
-							date: `${date} ${timeSlot}h00`,
-							speciality: speciality
-						}))
-					} else {
-						dispatch(
-							api.updateUser(user.id, {
-								insurance: speciality
-							})
-						);
-					}
+					createAppointment();
 				}).catch(error => {
 					setErrorMessage(error.message);
 				})
@@ -74,6 +56,37 @@ const Checkout = () => {
 			setErrorMessage(error.message);
 		})
 	};
+
+	const createAppointment = () => {
+		if (!checked) {
+			return alert("Veuillez accepter les termes et conditions");
+		}
+		if (!speciality.description) {
+			dispatch(api.createAppointment({
+				patient: {
+					firstName,
+					lastName,
+					email,
+					phoneNumber,
+					address,
+					city,
+					country,
+					id: user.id
+				},
+				date: `${date} ${timeSlot}:00`,
+				speciality: speciality,
+				type: bookingType
+			}))
+		} else {
+			dispatch(
+				api.payForInsurance(user.id, speciality)
+			);
+		}
+	}
+
+	const handleCheckboxChange = event => {
+		setChecked(event.target.checked);
+	}
 
   return(
     <div>
@@ -134,7 +147,7 @@ const Checkout = () => {
 											</div>
 											{!user && <div className="exist-customer">
 												Vous avez un compte?
-												<Link to="/login?next=checkout">Cliquez ici pour vous connecter</Link>
+												<Link to="/login?next=/patient/checkout">Cliquez ici pour vous connecter</Link>
 										</div>}
 										<div className="card contact-card">
 											<div className="card-body">
@@ -209,12 +222,12 @@ const Checkout = () => {
 										<div className="payment-widget">
 											<div className="terms-accept">
 												<div className="custom-checkbox">
-												   <input type="checkbox" id="terms_accept" />
-												   <label htmlFor="terms_accept">J'ai lu et j'accepte <a href="#0">Termes &amp; Conditions</a></label>
+												   <input type="checkbox" id="terms_accept" onChange={handleCheckboxChange} />
+												   <label htmlFor="terms_accept">J'ai lu et j'accepte <a href="/terms">Termes &amp; Conditions</a></label>
 												</div>
 											</div>
 											<div className="submit-section mt-4">
-												{loading ? (
+												{loading || insuranceLoading ? (
 													<button className="btn btn-primary btn-lg login-btn" type="button" disabled>
 														<span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
 														Chargement...
@@ -222,7 +235,7 @@ const Checkout = () => {
 												) :
 														<button
 														 className="btn btn-primary submit-btn"
-														 onClick={book}>Confirmer et Payer</button>
+														 onClick={createAppointment}>Confirmer et Payer</button>
 												}
 											</div>
 										</div>
@@ -236,9 +249,9 @@ const Checkout = () => {
 								</div>
 								<div className="card-body">
 									<div className="booking-doc-info">
-										<Link to="/patient/doctor-profile" className="booking-doc-img">
+										<div className="booking-doc-img">
 											<img src={IMG01} alt="User" />
-										</Link>
+										</div>
 										<div className="booking-info">
 											<h4>{speciality.name}</h4>
 										</div>

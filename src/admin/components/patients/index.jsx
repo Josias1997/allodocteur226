@@ -1,214 +1,230 @@
-import React, { Component } from "react";
+import React, { useState, useContext } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { FirebaseContext } from 'common';
 import { Table } from "antd";
 import { Link } from "react-router-dom";
+import { Modal } from "react-bootstrap";
 import SidebarNav from "../sidebar";
+import PatientSidebar from "../patientsidebar";
 import {
   itemRender,
   onShowSizeChange,
 } from "../../components/paginationfunction";
 import IMG01 from "../../assets/images/doctors/doctor-thumb-01.jpg";
-import IMG02 from "../../assets/images/doctors/doctor-thumb-02.jpg";
-import IMG03 from "../../assets/images/doctors/doctor-thumb-03.jpg";
-import IMG04 from "../../assets/images/doctors/doctor-thumb-04.jpg";
-import IMG05 from "../../assets/images/doctors/doctor-thumb-01.jpg";
-import IMG06 from "../../assets/images/doctors/doctor-thumb-02.jpg";
-import IMG07 from "../../assets/images/doctors/doctor-thumb-03.jpg";
-import IMG08 from "../../assets/images/doctors/doctor-thumb-04.jpg";
 
-class Patients extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [
-        {
-          id: "#PT001",
-          image: IMG01,
-          Name: "Charlene Reed",
-          age: "32",
-          address: "4417 Goosetown Drive, Taylorsville, North Carolina, 28681",
-          Phone: "899235672",
-          Visit: "11.00 AM",
-          Paid: "$3200.00",
-        },
-        {
-          id: "#PT002",
-          image: IMG02,
-          Name: "Carl Kelly",
-          age: "43",
-          address: "4026 Fantages Way, Brunswick, Maine, 04011",
-          Phone: "2077299974",
-          Visit: "02.00 AM",
-          Paid: "$3200.00",
-          status: true,
-        },
-        {
-          id: "#PT003",
-          image: IMG03,
-          Name: "Michelle Fairfaxn",
-          age: "24",
-          address: "2037 Pearcy Avenue, Decatur, Indiana, 46733",
-          Phone: "899235675",
-          Visit: "11.00 AM",
-          Paid: "$3200.00",
-        },
-        {
-          id: "#PT004",
-          image: IMG04,
-          Name: "Joan Gardner",
-          age: "25",
-          address: "2037 Pearcy Avenue, Decatur, Indiana, 46733",
-          Phone: "5043686874",
-          Visit: "06.00 AM",
-          Paid: "$3200.00",
-          status: true,
-        },
-        {
-          id: "#PT005",
-          image: IMG05,
-          Name: "Daniel Griffing",
-          age: "35",
-          address: "888 Everette Alley, Hialeah, Florida, 33012",
-          Phone: "899235679",
-          Visit: "10.00 AM",
-          Paid: "$3200.00",
-        },
-        {
-          id: "#PT006",
-          image: IMG06,
-          Name: "Walter Roberson",
-          age: "29",
-          address: "644 Coffman Alley, Bowling Green, Kentucky, 42101",
-          Phone: "9548207887",
-          Visit: "05.00 AM",
-          Paid: "$3200.00",
-        },
-        {
-          id: "#PT007",
-          image: IMG07,
-          Name: "Travis Trimble ",
-          age: "30",
-          address: "2399 Hillview Drive, San Francisco, California, 94103",
-          Phone: "899235671",
-          Visit: "08.00 AM",
-          Paid: "$3200.00",
-          status: true,
-        },
-        {
-          id: "#PT008",
-          image: IMG08,
-          Name: "Charlene Reed ",
-          age: "22",
-          address: "4914 Hilltop Haven Drive, Passaic, New Jersey, 07055",
-          Phone: "3153844562",
-          Visit: "09.00 AM",
-          Paid: "$3200.00",
-        },
-      ],
-    };
+const Patients = () => {
+  const { api } = useContext(FirebaseContext);
+  const dispatch = useDispatch();
+  const users = useSelector((state) =>
+    state.admin.users.filter((user) => user.role !== "admin")
+  );
+  const user = useSelector((state) => state.auth.user);
+  const addingPrescription = useSelector(state => state.prescriptiondata.loading);
+  const prescriptionError = useSelector(state => state.prescriptiondata.error);
+  const addingMedicalRecord = useSelector(state => state.medicalRecorddata.loading);
+  const medicalRecordError = useSelector(state => state.medicalRecorddata.error);
+
+  const [showModal, setShowModal] = useState(false);
+  const [currentPatient, setCurrentPatient] = useState();
+  const [type, setType] = useState("medical-record");
+  const [file, setFile] = useState();
+
+  const columns = [
+    {
+      title: "Patient Id",
+      dataIndex: "id",
+      sorter: (a, b) => a.id.length - b.id.length,
+    },
+    {
+      title: "Nom Patient",
+      dataIndex: "firstName",
+      render: (text, record) => (
+        <h2 className="table-avatar">
+          <a href="/admin/profile" className="avatar avatar-sm mr-2">
+            <img alt="" src={IMG01} />
+          </a>
+          <a href="/admin/profile">
+            {record.firstName} {record.lastName}
+          </a>
+        </h2>
+      ),
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+    },
+    {
+      title: "Téléphone",
+      dataIndex: "phoneNumber",
+    },
+    {
+      title: "Assurance Maladies",
+      dataIndex: "insurance",
+      render: (text, record) => (
+        <p>{record.insurance ? record.insurance.number : "0"} Consultations</p>
+      ),
+    },
+    {
+      title: "Actions",
+      render: (record) => (
+        <button
+          className="btn btn-primary btn-block"
+          onClick={() => {
+            setCurrentPatient(record);
+            setShowModal(true);
+          }}
+        >
+          Prescription
+        </button>
+      ),
+    },
+  ];
+
+  const sendFile = () => {
+    if (!file) {
+      return alert("Document non présent");
+    }
+    if (type === "medical-record") {
+      dispatch(api.createMedicalRecord({
+        patient: currentPatient, file
+      }));
+    } else {
+      dispatch(api.createPrescription({
+        patient: currentPatient, file
+      }))
+    }
   }
-  render() {
-    const { data } = this.state;
 
-    const columns = [
-      {
-        title: "Patient Id",
-        dataIndex: "id",
-        sorter: (a, b) => a.id.length - b.id.length,
-      },
-      {
-        title: "Patient Name",
-        dataIndex: "Name",
-        render: (text, record) => (
-          <h2 className="table-avatar">
-            <Link to="/admin/profile" className="avatar avatar-sm mr-2">
-              <img alt="" src={record.image} />
-            </Link>
-            <Link to="/admin/profile">{text}</Link>
-          </h2>
-        ),
-        sorter: (a, b) => a.Name.length - b.Name.length,
-      },
-      {
-        title: "Age",
-        dataIndex: "age",
-        sorter: (a, b) => a.age.length - b.age.length,
-      },
-
-      {
-        title: "address",
-        dataIndex: "address",
-      },
-      {
-        title: "Phone",
-        dataIndex: "Phone",
-        sorter: (a, b) => a.Phone.length - b.Phone.length,
-      },
-      {
-        title: "Last Visit",
-        dataIndex: "Visit",
-        sorter: (a, b) => a.Visit.length - b.Visit.length,
-      },
-      {
-        title: "Paid",
-        dataIndex: "Paid",
-        sorter: (a, b) => a.Paid.length - b.Paid.length,
-      },
-    ];
-
-    return (
-      <>
-        <SidebarNav />
-        <div className="page-wrapper">
-          <div className="content container-fluid">
-            <div className="page-header">
-              <div className="row">
-                <div className="col-sm-12">
-                  <h3 className="page-title">List of Patient</h3>
-                  <ul className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <Link to="/admin">Dashboard</Link>
-                    </li>
-                    <li className="breadcrumb-item">
-                      <Link to="#0">Users</Link>
-                    </li>
-                    <li className="breadcrumb-item active">Patient</li>
-                  </ul>
-                </div>
+  return (
+    <>
+      <SidebarNav />
+      <div className="page-wrapper">
+        <div className="content container-fluid">
+          <div className="page-header">
+            <div className="row">
+              <div className="col-sm-12">
+                <h3 className="page-title">List of Patient</h3>
+                <ul className="breadcrumb">
+                  <li className="breadcrumb-item">
+                    <Link to="/admin">Dashboard</Link>
+                  </li>
+                  <li className="breadcrumb-item">
+                    <Link to="#0">Users</Link>
+                  </li>
+                  <li className="breadcrumb-item active">Patient</li>
+                </ul>
               </div>
             </div>
+          </div>
 
-            <div className="row">
-              <div className="col-md-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="table-responsive">
-                      <Table
-                        className="table-striped"
-                        style={{ overflowX: "auto" }}
-                        columns={columns}
-                        // bordered
-                        dataSource={data}
-                        rowKey={(record) => record.id}
-                        showSizeChanger={true}
-                        pagination={{
-                          total: data.length,
-                          showTotal: (total, range) =>
-                            `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                          showSizeChanger: true,
-                          onShowSizeChange: onShowSizeChange,
-                          itemRender: itemRender,
-                        }}
-                      />
-                    </div>
+          <div className="row">
+            <div className="col-md-12">
+              <div className="card">
+                <div className="card-body">
+                  <div className="table-responsive">
+                    <Table
+                      className="table-striped"
+                      style={{ overflowX: "auto" }}
+                      columns={columns}
+                      // bordered
+                      dataSource={users}
+                      rowKey={(record) => record.id}
+                      showSizeChanger={true}
+                      pagination={{
+                        total: users.length,
+                        showTotal: (total, range) =>
+                          `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+                        showSizeChanger: true,
+                        onShowSizeChange: onShowSizeChange,
+                        itemRender: itemRender,
+                      }}
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </>
-    );
-  }
-}
+      </div>
+      <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        centered
+        size="xl"
+      >
+        <Modal.Header closeButton />
+        <Modal.Body>
+          <div className="row">
+            <div className="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+              <div className="profile-sidebar">
+                <PatientSidebar patient={currentPatient} />
+              </div>
+            </div>
+            <div className="col-md-7 col-lg-8 col-xl-9">
+              <div className="card">
+                <div className="card-header">
+                  <h4 className="card-title mb-0">Envoyer document</h4>
+                </div>
+                <div className="card-body">
+                  <div className="row">
+                    <div className="col-sm-6">
+                      <div className="biller-info">
+                        <h4 className="d-block">
+                          Dr. {user?.firstName} {user?.lastName}
+                        </h4>
+                        <span className="d-block text-sm text-muted">
+                          {user?.speciality}
+                        </span>
+                        <span className="d-block text-sm text-muted">
+                          {user?.city} {user?.country}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  {prescriptionError && <div>{prescriptionError.message}</div>}
+                  {medicalRecordError && <div>{medicalRecordError.message}</div>}
+                  <div className="form-group">
+                    <label>Type Document</label>
+                    <select className="form-control" onChange={event => setType(event.target.value)}>
+                      <option value="medical-record">Examen Médical</option>
+                      <option value="prescription">Prescription / Ordonnance</option>
+                    </select>
+                  </div>
+                  <div className="form-group mb-0" onChange={event => setFile(event.target.files[0])}>
+                      <label>Fichier</label>
+                      <input type="file" className="form-control" />
+                  </div>
+                  <div className="row">
+                    <div className="col-md-12">
+                      <div className="submit-section">
+                      {(addingPrescription || addingMedicalRecord) ?  <button className="btn btn-primary submit-btn" disabled>
+                        <span className="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        Chargement...
+                      </button> :  <button
+                          onClick={sendFile}
+                          type="submit"
+                          className="btn btn-primary submit-btn"
+                        >
+                          Envoyer
+                        </button>}
+                        <button
+                          onClick={() => setFile(null)}
+                          type="reset"
+                          className="btn btn-secondary submit-btn"
+                        >
+                          Annuler
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+};
 
 export default Patients;

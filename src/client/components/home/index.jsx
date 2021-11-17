@@ -26,9 +26,9 @@ const Home = () => {
                       <div className="card text-center doctor-book-card">
                           <img src={Doctor07} alt="" className="img-fluid" />
                           <div className="doctor-book-card-content tile-card-content-1">
-                            <div onClick={() => history.push("/patient/choose-speciality/home")}>
+                            <div onClick={() => history.push("/patient/choose-speciality/house")}>
                                 <h3 className="card-title mb-0">Consultation à domicile</h3>
-                                <a href="#" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Réserver</a>
+                                <button className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Réserver</button>
                             </div>
                           </div>
                       </div>
@@ -39,7 +39,7 @@ const Home = () => {
                         <div className="doctor-book-card-content tile-card-content-1">
                           <div onClick={() => history.push("/patient/choose-speciality/online")}>
                               <h3 className="card-title mb-0">Consultation en ligne</h3>
-                              <a href="#" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Commencer</a>
+                              <button className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>Commencer</button>
                           </div>
                         </div>
                       </div>
@@ -50,9 +50,9 @@ const Home = () => {
                         <div className="doctor-book-card-content tile-card-content-1">
                             <div onClick={() => history.push("/patient/choose-package")}>
                                 <h3 className="card-title mb-0">Assurance Maladie</h3>
-                                <a href="#" className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>
+                                <button className="btn book-btn1 px-3 py-2 mt-3" tabIndex={0}>
                                   Paiement
-                                </a>
+                                </button>
                             </div>
                         </div>
                       </div>

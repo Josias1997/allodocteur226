@@ -1,9 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { FirebaseContext } from "common";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link, useLocation, Redirect } from 'react-router-dom';
 
 import loginBanner from '../../../assets/images/login-banner.png';
+
+const useQuery = () => {
+    return new URLSearchParams(useLocation().search);
+}
 
 const DoctorRegister = (props) => {
     const { api } = useContext(FirebaseContext);
@@ -17,6 +21,7 @@ const DoctorRegister = (props) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
+    const query = useQuery();
 
     useEffect(() => {
         document.body.classList.add('account-page');
@@ -25,19 +30,20 @@ const DoctorRegister = (props) => {
         }
     }, []);
 
-    useEffect(() => {
-        if (user) {
-            if (user.role === "doctor") {
-                props.history.push('/doctor/doctor-dashboard');
-            } else {
-                props.history.push('/patient/dashboard');
-            }
-        }
-    }, [user])
-
     const register = () => {
         dispatch(api.signUp(email, password, firstName, lastName, phoneNumber, "doctor"));
     };
+
+    if (user) {
+        if (query.get("next")) {
+            return <Redirect to={query.get("next")} />
+        }
+        if (user.role === "doctor") {
+            return <Redirect to="/doctor/doctor-dashboard" />
+        } else {
+            return <Redirect to="/patient/dashboard" />
+        }
+    }
 
     return(
         <div className="content">

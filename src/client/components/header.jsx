@@ -1,8 +1,9 @@
 import React, { useState, useContext } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector, useDispatch } from "react-redux";
 import { FirebaseContext } from "common";
+import { Modal } from 'react-bootstrap';
 //icon
 
 import { faHospital } from "@fortawesome/free-regular-svg-icons";
@@ -11,11 +12,70 @@ import IMG01 from "../assets/images/doctors/doctor-thumb-02.jpg";
 import Dropdown from "react-bootstrap/Dropdown";
 import $ from "jquery";
 import { useEffect } from "react";
+import Icon from '@material-ui/core/Icon';
+import AgoraRTC from 'agora-rtc-sdk-ng';
+
+import { useRTC, useRemoteVideoTrack } from "../../rtccontext";
+const APP_ID = '37212e289fbf430fa31866c8b6af8559';
 
 const Header = (props) => {
   const { api } = useContext(FirebaseContext);
   const dispatch = useDispatch();
   const user = useSelector(state => state.auth.user);
+  const callData = useSelector(state => state.call.callData);
+  const [showModal, setShowModal] = useState(false);
+  const history = useHistory();
+  const rtc = useRTC();
+  const { setRemoteVideoTrack } = useRemoteVideoTrack();
+
+  useEffect(() => {
+    rtc.current.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+    rtc.current.client.on("user-published", async (user, mediaType) => {
+      await rtc.current.client.subscribe(user, mediaType);
+      console.log("user published");
+      if (mediaType === 'audio') {
+        const remoteAudioTrack = user.audioTrack;
+        remoteAudioTrack.play();
+      }
+      if (mediaType === 'video') {
+        console.log("video", user);
+        setRemoteVideoTrack(user.videoTrack);
+      }
+      rtc.current.client.on("user-unpublished", async user => {
+        await rtc.current.client.unsubscribe(user);
+      });
+    })
+  }, [])
+
+  useEffect(() => {
+    if (user) {
+      dispatch(api.listenToCalls(user.id));
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (callData?.callType === "call") {
+      setShowModal(true)
+    } else {
+      setShowModal(false);
+    }
+  }, [callData]);
+
+  const joinVoiceCall = async (channel, token, callTarget) => {
+    await rtc.current.client.join(APP_ID, channel, token, user.id);
+    rtc.current.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+    rtc.current.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+    await rtc.current.client.publish([rtc.current.localAudioTrack, rtc.current.localVideoTrack]);
+    setShowModal(false);
+    dispatch(api.acceptCall(callData.caller.id));
+    history.push({
+      pathname: '/chat/call',
+      state: { 
+        callTarget: callTarget,
+        callerId: callData.caller.id
+      }
+    })
+  };
   let pathnames = window.location.pathname
 
   const [active, setActive] = useState(false);
@@ -29,6 +89,7 @@ const Header = (props) => {
   const onhandleCloseMenu = () => {
     var root = document.getElementsByTagName("html")[0];
     root.classList.remove("menu-opened");
+    $('.sidebar-overlay').removeClass('opened');
   };
 
   useEffect(() => {
@@ -51,9 +112,30 @@ const Header = (props) => {
 
   return (
     <header className="header">
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Body>  
+          <div className="call-box incoming-box">
+            <div className="call-wrapper">
+              <div className="call-inner">
+                <div className="call-user">
+                  <img alt="User" src={IMG01} className="call-avatar" />
+                  <h4>{callData?.caller.firstName} {callData?.caller.lastName}</h4>
+                  <span>Connection...</span>
+                </div>              
+                <div className="call-items">
+                  <button onClick={() => setShowModal(false)} className="btn call-item call-end" data-dismiss="modal" aria-label="Close">
+                    <Icon>call_end</Icon>
+                  </button>
+                  <button onClick={() => joinVoiceCall(callData?.channel, callData?.token, callData?.caller)} className="btn call-item call-start"><i className="material-icons">call</i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
       <nav className="navbar navbar-expand-lg header-nav">
         <div className="navbar-header">
-          <a href="#0" id="mobile_btn" onClick={() => onHandleMobileMenu()}>
+          <a id="mobile_btn" onClick={() => onHandleMobileMenu()}>
             <span className="bar-icon">
               <span></span>
               <span></span>
@@ -85,7 +167,7 @@ const Header = (props) => {
               </a>
             </li> */}
             <li className={pathnames.includes("home") ? "active" : ""}>
-              <Link to="/home" onClick={()=>onhandleCloseMenu()}>Accueil</Link>
+              <Link to="/home" onClick={()=> onhandleCloseMenu()}>Accueil</Link>
             </li>
             <li className={`has-submenu ${url.includes("choose-speciality") ? "active" : ""}`}>
               <a href="#0">
@@ -93,27 +175,26 @@ const Header = (props) => {
               </a>
               <ul className={`submenu`}>
                 <li>
-                  <Link to="/patient/choose-speciality/online" onClick={()=>onhandleCloseMenu()}>Consultation en ligne</Link>
+                  <Link to="/patient/choose-speciality/online" onClick={() => onhandleCloseMenu()}>Consultation en ligne</Link>
                 </li>
                 <li>
-                  <Link to="/patient/choose-speciality/home" onClick={()=>onhandleCloseMenu()}>Consultation à domicile</Link>
+                  <Link to="/patient/choose-speciality/house" onClick={() => onhandleCloseMenu()}>Consultation à domicile</Link>
                 </li>
               </ul>
             </li>
-            <li className={pathnames.includes("patient-chat") ? "active" : ""}>
-              <Link to="/patient/patient-chat" onClick={()=>onhandleCloseMenu()}>Discuter</Link>
+            <li className={pathnames.includes("/patient/chat") ? "active" : ""}>
+              <Link to="/patient/chat" onClick={() => onhandleCloseMenu()}>Discuter</Link>
             </li>
             <li className={pathnames.includes("choose-package") ? "active" : ""}>
-              <Link to="/patient/choose-package" onClick={()=>onhandleCloseMenu()}>Assurance Maladies</Link>
+              <Link to="/patient/choose-package" onClick={() =>onhandleCloseMenu()}>Assurance Maladies</Link>
             </li>
             {/* <li>
               <a href="/admin" target="_blank" to="/admin">
                 Admin
               </a>
             </li> */}
-            {user ? (<li className="login-link" onClick={()=>onhandleCloseMenu()}>
-                <i className="fa fa-user"></i>
-               <Link to={user.role === "patient" ? "/patient/dashboard" : "/doctor/doctor-dashboard"}>Profil</Link>
+            {user ? (<li className="login-link" onClick={() => onhandleCloseMenu()}>
+               <Link to={"/patient/dashboard"}>Profil</Link>
              </li>) :
             <li className="login-link" onClick={() => onhandleCloseMenu()}>
                <Link to="/login">Connexion / Inscription</Link>
@@ -155,13 +236,13 @@ const Header = (props) => {
                     </div>
                     <div className="user-text">
                       <h6>{user?.firstName} {user?.lastName}</h6>
-                      <p className="text-muted mb-0">{user?.role === "doctor" ? "Docteur" : "Patient"}</p>
+                      <p className="text-muted mb-0">Patient</p>
                     </div>
                   </div>
-                  <Dropdown.Item href={user.role === "doctor" ? "/doctor/doctor-dashboard" : "/patient/dashboard"}>
+                  <Dropdown.Item href={"/patient/dashboard"}>
                    Tableau de bord
                   </Dropdown.Item>
-                  <Dropdown.Item href={user.role === "doctor" ? "/doctor/profile-setting" : "/patient/profile"}>
+                  <Dropdown.Item href={"/patient/profile"}>
                     Paramètres Profil
                   </Dropdown.Item>
                   <Dropdown.Item href="/" onClick={() => dispatch(api.signOut())} >Déconnexion</Dropdown.Item>

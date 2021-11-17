@@ -2172,6 +2172,7 @@ button.bg-danger:hover {
 	display: none;
 	margin-right: 30px;
 }
+
 html.menu-opened body {
     overflow: hidden;
 }
@@ -4759,6 +4760,8 @@ html.menu-opened body {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     position: relative;
+    justify-content: center;
+    align-items: center;
 }
 .chat-cont-left {
     border-right: 1px solid #f0f0f0;
@@ -4922,7 +4925,6 @@ html.menu-opened body {
     padding: 0 15px;
 }
 .chat-cont-right .chat-header .back-user-list {
-    display: none;
     margin-right: 5px;
     margin-left: -7px;
 }
@@ -5972,6 +5974,10 @@ html.menu-opened body {
 	height: 100%;
 	position: relative;
 	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #000;
 }
 .voice-call-avatar {
 	-webkit-box-align: center;
@@ -6035,7 +6041,7 @@ html.menu-opened body {
 .call-icons .call-items .call-item:last-child {
 	margin-right: 0;
 }
-.call-icons .call-items .call-item a {
+.call-icons .call-items .call-item button {
 	color: #777;
 	border: 1px solid #ddd;
 	width: 50px;
@@ -6045,11 +6051,11 @@ html.menu-opened body {
 	display: inline-block;
 	font-size: 20px;
 }
-.call-icons .call-items .call-item a i {
+.call-icons .call-items .call-item button i {
 	width: 18px;
 	height: 18px;
 }
-.user-video {
+/*.user-video {
 	bottom: 0;
 	left: 0;
 	overflow: auto;
@@ -6057,14 +6063,12 @@ html.menu-opened body {
 	right: 0;
 	top: 0;
 	z-index: 10;
-}
-.user-video img {
-	width: auto;
-	max-width: 100%;
-	height: auto;
-	max-height: 100%;
-	display: block;
-	margin: 0 auto;
+}*/
+
+.user-video {
+	position: absolute;
+	width: 50%;
+	height: 100%;
 }
 .user-video video {
 	width: auto;
@@ -6079,27 +6083,15 @@ html.menu-opened body {
 	z-index: 99;
 	bottom: 20px;
 	right: 20px;
-}
-.my-video ul {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-.my-video ul li {
-	float: left;
-	width: 120px;
-	margin-right: 10px;
-}
-.my-video ul li img {
-	border: 3px solid #fff;
-	border-radius: 6px;
+	width: 20%;
+	height: 50%;
 }
 .end-call {
 	position: absolute;
 	top: 7px;
 	right: 0;
 }
-.end-call a {
+.end-call button {
     background-color: #f06060;
     border-radius: 50px;
     color: #fff;
@@ -6107,6 +6099,7 @@ html.menu-opened body {
     line-height: 10px;
     padding: 8px 25px;
     text-transform: uppercase;
+    border-color: #f06060;
 }
 .call-users {
 	position: absolute;
@@ -7556,11 +7549,6 @@ ul.benifits-col li i{
 		border-right: 0;
 	}
 	.chat-cont-right {
-		position: absolute;
-		right: -100%;
-		top: 0;
-		opacity: 0;
-		visibility: hidden;
 	}
 	.chat-cont-right .chat-header {
 		justify-content: start;
@@ -7679,6 +7667,13 @@ ul.benifits-col li i{
 	}
 }
 @media only screen and (max-width: 767.98px) {
+	.user-video {
+		width: 100%;
+	}
+	.my-video {
+		height: 30%;
+		width:  30%;
+	}
 	body {
 		font-size: 0.875rem;
 	}
@@ -7797,7 +7792,8 @@ ul.benifits-col li i{
 		text-transform: uppercase;
 	}
 	.section-search {
-		background: #f9f9f9;
+		background: #f9f9f9 url("../images/search-bg.png") no-repeat bottom center;
+		min-height: 100px;
 	}
 	.day-slot li span {
 		font-size: 16px;
@@ -7979,7 +7975,10 @@ ul.benifits-col li i{
 		flex-direction: column;
 	}
 	.clinic-services {
-		display: none;
+		align-self: center;
+		padding: 10px;
+		align-items: center;
+		justify-content: center;
 	}
 	.doctor-img {
 		margin: 0 auto 20px;
@@ -8059,6 +8058,13 @@ ul.benifits-col li i{
 }
 
 @media only screen and (max-width: 575.98px) {
+	.user-video {
+		width: 100%;
+	}
+	.my-video {
+		height: 30%;
+		width:  30%;
+	}
 	body {
 		font-size: 0.8125rem;
 	}
@@ -8275,8 +8281,16 @@ ul.benifits-col li i{
 }
 
 @media only screen and (max-width:479px) {
+	.user-video {
+		width: 100%;
+	}
+	.my-video {
+		height: 30%;
+		width:  30%;
+	}
 	.section-search {
-		min-height: 410px;
+		background: #f9f9f9 url("../images/search-bg.png") no-repeat bottom center;
+		min-height: 100px;
 		padding: 30px 15px;
 	}
 	.specialities-slider .slick-slide {

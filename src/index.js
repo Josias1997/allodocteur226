@@ -15,7 +15,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 
-if(!window.location.pathname.includes("admin") && !window.location.pathname.includes("pharmacyadmin")) {
+if(!window.location.pathname.includes("admin")) {
     require('./client/assets/css/all.css')
     require('./client/assets/css/all.min.css')
     require('./client/assets/css/fontawesome.min.css')

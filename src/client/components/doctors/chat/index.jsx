@@ -2,10 +2,15 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FirebaseContext } from 'common';
 import moment from 'moment';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
 import Icon from '@material-ui/core/Icon';
 import { IMG01, IMG02 } from './img';
+import { useRTC } from '../../../../rtccontext';
+
+import AgoraRTC from 'agora-rtc-sdk-ng';
+const TOKEN_URL = 'https://agora-server-token.herokuapp.com/access_token';
+const APP_ID = '37212e289fbf430fa31866c8b6af8559';
 
 const useQuery = () => {
 	return new URLSearchParams(useLocation().search);
@@ -17,13 +22,17 @@ const DoctorChat = () => {
 	const chats = useSelector(state => state.doctordata.chats);
 	const patients = useSelector(state => state.admin.patients);
 	const chatMessages = useSelector(state => state.chatdata.chatMessages);
+	const callAccepted = useSelector(state => state.call.callAccepted);
 	const user = useSelector(state => state.auth.user);
 	const [activeModal, setActiveModal] = useState(null);
 	const [searchInput, setSearchInput] = useState('');
 	const [messageInput, setMessageInput] = useState('');
 	const [currentPatients, setCurrentPatients] = useState(patients);
 	const [currentChat, setCurrentChat] = useState();
+	const [callToken, setCallToken] = useState('');
+	const history = useHistory();
 	const query = useQuery();
+	const rtc = useRTC();
 
 	useEffect(() => {
 		dispatch(api.fetchUsers("patient"));
@@ -59,8 +68,77 @@ const DoctorChat = () => {
 		}
 	}, [currentChat])
 
-	const openModal= (id)=> {
-       	setActiveModal(id);
+	useEffect(() => {
+		if (callAccepted && currentChat && user) {
+			joinChannel();
+		}
+	}, [callAccepted])
+
+	const fetchToken = async () => {
+		if (currentChat) {
+			const response = await fetch(`${TOKEN_URL}?channel=${currentChat.id}`);
+			if (!response.ok) {
+				const message = `Impossible de démarrer l'appel: ${response.status}`;
+				throw new Error(message);
+			}
+			const data = await response.json();
+			return data;
+		}
+	}
+
+	const leaveCall = async () => {
+		dispatch(api.endCall(currentChat.patient.id, user.id));
+		if (rtc.current.localAudioTrack) {
+			rtc.current.localAudioTrack.close();
+		}
+		if (rtc.current.localVideoTrack) {
+			rtc.current.localVideoTrack.close();
+		}
+		if (rtc.current.client) {
+			await rtc.current.client.leave();
+		}
+		setActiveModal(false);
+	}
+
+	const joinChannel = async () => {
+		await rtc.current.client.join(APP_ID, currentChat.id, callToken, user.id);
+		rtc.current.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+		rtc.current.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+		await rtc.current.client.publish([rtc.current.localAudioTrack, rtc.current.localVideoTrack]);
+		setActiveModal(false);
+		history.push({
+			pathname: '/chat/call',
+			state: { 
+				callTarget: currentChat.patient, 
+				callerId: user.id
+			}
+		})
+	} 
+
+	const startVoiceCall = () => {
+		setActiveModal(true);
+		fetchToken().then(({ token }) => {
+			setCallToken(token);
+			dispatch(api.startCall(currentChat.patient.id, token, currentChat.id, {
+				id: user.id,
+				firstName: user.firstName,
+				lastName: user.lastName
+			}, "call"));
+		}).catch(error => {
+			alert(error.message);
+		}) 
+	}
+
+	const startVideoCall = () => {
+		fetchToken().then(({ token }) => {
+			
+		}).catch(error => {
+			alert(error.message);
+		})
+	}
+
+	const openModal= ()=> {
+       	setActiveModal(true);
 	}
 	  
     const handleCloseModal = () => {
@@ -212,15 +290,15 @@ const DoctorChat = () => {
 											</div>
 										</div>
 										<div className="chat-options">
-											<a href="#0" data-toggle="modal" data-target="#voice_call" onClick={() => openModal('voice')}>
+											<button className="btn call-item" data-toggle="modal" data-target="#voice_call" onClick={startVoiceCall}>
 												<i className="material-icons">local_phone</i> 
-											</a>
-											<a href="#0" data-toggle="modal" data-target="#video_call" onClick={() => openModal('video')}>
+											</button>
+											<button className="btn call-item" data-toggle="modal" data-target="#video_call" onClick={startVideoCall}>
 												<i className="material-icons">videocam</i>
-											</a>
-											<a href="#0">
+											</button>
+											<button className="btn call-item">
 												<i className="material-icons">more_vert</i>
-											</a>
+											</button>
 										</div>
 									</div>
 									<div className="chat-body">
@@ -308,53 +386,27 @@ const DoctorChat = () => {
 				</div>
 
 			</div>		
-				{/* modal for video*/}
-                <Modal show={activeModal === 'video'} onHide={handleCloseModal} centered>
-					<Modal.Body>	
-						<div className="call-box incoming-box">
-							<div className="call-wrapper">
-								<div className="call-inner">
-									<div className="call-user">
-										<img alt="User" src={IMG01} className="call-avatar" />
-										<h4>{currentChat?.patient.firstName} {currentChat?.patient.lastName}</h4>
-										<span>Connection...</span>
-									</div>							
-									<div className="call-items">
-										<a href="#0" className="btn call-item call-end" data-dismiss="modal" aria-label="Close">
+			<Modal show={activeModal} onHide={handleCloseModal} centered>
+				<Modal.Body>	
+					<div className="call-box incoming-box">
+						<div className="call-wrapper">
+							<div className="call-inner">
+								<div className="call-user">
+									<img alt="User" src={IMG01} className="call-avatar" />
+									<h4>{currentChat?.patient.firstName} {currentChat?.patient.lastName}</h4>
+									<span>Connecting...</span>
+								</div>							
+								<div className="call-items">
+									<button onClick={leaveCall} className="btn call-item call-end" data-dismiss="modal" aria-label="Close">
 										<Icon>call_end</Icon>
-										</a>
-										<Link to="/voice-call" className="btn call-item call-start"><i className="material-icons">call</i></Link>
-									</div>
+									</button>
 								</div>
 							</div>
 						</div>
-						</Modal.Body>
-				</Modal>
-				{/* modal for call*/}
-				<Modal show={activeModal === 'voice'} onHide={handleCloseModal} centered>
-					<Modal.Body>	
-						<div className="call-box incoming-box">
-							<div className="call-wrapper">
-								<div className="call-inner">
-									<div className="call-user">
-										<img alt="User" src={IMG01} className="call-avatar" />
-										<h4>{currentChat?.patient.firstName} {currentChat?.patient.lastName}</h4>
-										<span>Connecting...</span>
-									</div>							
-									<div className="call-items">
-										<a href="#0" className="btn call-item call-end" data-dismiss="modal" aria-label="Close">
-										<Icon>call_end</Icon>
-										</a>
-										<Link to="/voice-call" className="btn call-item call-start"><i className="material-icons">call</i></Link>
-									</div>
-								</div>
-							</div>
-						</div>
-					</Modal.Body>
-				</Modal>
-			
+					</div>
+				</Modal.Body>
+			</Modal>
 		</div>
-
     );
 }
 export default DoctorChat;      
